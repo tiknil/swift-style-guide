@@ -171,6 +171,7 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 ## Indentazione
 * Indentare usando 2 spazi. Impostare Xcode nel modo seguente da `Preferences > Text Editing > Indentation`:
+![Indentazione](https://github.com/tiknil/swift-style-guide/blob/master/images/indentation.png)
 * Le parentesi graffe `{` `}` vanno sempre aperte sulla stessa riga e chiuse su un'altra riga.
 > **CONSIGLIO:** Si può indentare automaticamente premendo `⌘+A` (seleziona tutto) e `Control+i` (indentazione automatica)
 
