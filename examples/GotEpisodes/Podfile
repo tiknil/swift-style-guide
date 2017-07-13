@@ -1,0 +1,24 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
+
+target 'GotEpisodes' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for GotEpisodes
+  pod 'Swinject', '~> 2.1.0' # Dependency injection
+  pod 'ReactiveCocoa', '6.0.0-rc.2' # Functional Reactive Programming
+  pod 'Alamofire', '~> 4.4' # Request http
+  pod "Himotoki", "~> 3.0" # Json parse
+
+  target 'GotEpisodesTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'GotEpisodesUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
