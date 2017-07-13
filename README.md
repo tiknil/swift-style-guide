@@ -229,10 +229,10 @@ Tale pattern normalmente promette di separare in 3 livelli il codice:
 * Il **Controller** ha il compito di prendere i dati dal *Model* e mostrarli nelle *View* ed elaborare le azioni dell'utente.
 
 I legami tra i 3 layer sono rappresentabili così:
-![Original MVC](https://github.com/tiknil/swift-style-guide/blob/master/images/original-mvc.png)
+![Original MVC](https://github.com/tiknil/swift-style-guide/blob/master/images/original_mvc.png)
 
 Per come è strutturato *UIKit* la realtà è che Apple utilizza un MVC leggermente modificato:
-![Original MVC](https://github.com/tiknil/swift-style-guide/blob/master/images/apple-mvc.png)
+![Original MVC](https://github.com/tiknil/swift-style-guide/blob/master/images/apple_mvc.png)
 
 In pratica *View* e *Controller* risultano molto legati portando a scrivere la maggioranza del codice nei **UIVIewController**. In ambito iOS viene infatti spesso associata un'altra definizione all'acronimo MVC: **Massive-View-Controller**.
 
@@ -280,8 +280,7 @@ La root del repository avrà la seguente struttura:
 |-- AwesomeApp.xcworkspace       # File del workspace contenente configurazione dei CocoaPods.
 ```
 
-Prima del primo commit sul repository git aggiungere questo file **.gitignore**:
-![Original MVC](https://github.com/tiknil/swift-style-guide/blob/master/resources/.gitignore)
+Prima del primo commit sul repository git aggiungere il file [.gitignore](https://github.com/tiknil/swift-style-guide/blob/master/resources/.gitignore).
 
 ### Cartelle di progetto
 La cartella contenente il codice sorgente dell'app avrà la seguente struttura:
