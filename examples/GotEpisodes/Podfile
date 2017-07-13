@@ -10,6 +10,7 @@ target 'GotEpisodes' do
   pod 'ReactiveCocoa', '6.0.0-rc.2' # Functional Reactive Programming
   pod 'Alamofire', '~> 4.4' # Request http
   pod "Himotoki", "~> 3.0" # Json parse
+  pod 'Timepiece', '~> 1.2' # Gestione evoluta delle date
 
   target 'GotEpisodesTests' do
     inherit! :search_paths

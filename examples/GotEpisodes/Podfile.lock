@@ -7,12 +7,14 @@ PODS:
     - Result (~> 3.2)
   - Result (3.2.3)
   - Swinject (2.1.0)
+  - Timepiece (1.2.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.4)
   - Himotoki (~> 3.0)
   - ReactiveCocoa (= 6.0.0-rc.2)
   - Swinject (~> 2.1.0)
+  - Timepiece (~> 1.2)
 
 SPEC CHECKSUMS:
   Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
@@ -21,7 +23,8 @@ SPEC CHECKSUMS:
   ReactiveSwift: b8ea244bd66fd841151a9146d4e2601a9acbaddf
   Result: 128640a6347e8d2ae48b142556739a2d13f90ce6
   Swinject: 85e468ac75c5c2d234076f98c591d57d56bc64bc
+  Timepiece: d07900e985af4911f09146f1175fdbec37944836
 
-PODFILE CHECKSUM: 048f4fc20afa600d339526409743eca54ef7f8d6
+PODFILE CHECKSUM: 39c77b193d7574de266524a43ff2716757056f03
 
 COCOAPODS: 1.2.1

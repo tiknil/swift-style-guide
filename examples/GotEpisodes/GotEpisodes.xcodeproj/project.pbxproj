@@ -11,10 +11,14 @@
 		68818C9B1F17A8D7001D72DA /* GotEpisodesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68818C9A1F17A8D7001D72DA /* GotEpisodesTests.swift */; };
 		68818CA61F17A8D7001D72DA /* GotEpisodesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68818CA51F17A8D7001D72DA /* GotEpisodesUITests.swift */; };
 		68818CC21F17B26C001D72DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68818CB41F17B26C001D72DA /* AppDelegate.swift */; };
-		68818CC31F17B26C001D72DA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68818CB51F17B26C001D72DA /* Info.plist */; };
 		68818CC41F17B26C001D72DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68818CBA1F17B26C001D72DA /* Assets.xcassets */; };
 		68818CC51F17B26C001D72DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68818CBD1F17B26C001D72DA /* LaunchScreen.storyboard */; };
 		68818CC61F17B26C001D72DA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68818CBE1F17B26C001D72DA /* Main.storyboard */; };
+		68818CC81F17BE7C001D72DA /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68818CC71F17BE7C001D72DA /* Episode.swift */; };
+		68818CCA1F17C998001D72DA /* ApiServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68818CC91F17C998001D72DA /* ApiServiceProtocol.swift */; };
+		689FF1661F17CCDF00004BD9 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FF1651F17CCDF00004BD9 /* ApiService.swift */; };
+		689FF16A1F17D03900004BD9 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FF1691F17D03900004BD9 /* NetworkError.swift */; };
+		689FF16C1F17DBBE00004BD9 /* EpisodesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FF16B1F17DBBE00004BD9 /* EpisodesViewController.swift */; };
 		8698AF0C2FA323F421CA144C /* Pods_GotEpisodesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0593214BCD8780A3E48F6A77 /* Pods_GotEpisodesTests.framework */; };
 		D6F8DD92791A6487E1B992EB /* Pods_GotEpisodes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD11019434FA454C21F3CD10 /* Pods_GotEpisodes.framework */; };
 /* End PBXBuildFile section */
@@ -52,6 +56,11 @@
 		68818CBA1F17B26C001D72DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		68818CBD1F17B26C001D72DA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		68818CBE1F17B26C001D72DA /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		68818CC71F17BE7C001D72DA /* Episode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
+		68818CC91F17C998001D72DA /* ApiServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiServiceProtocol.swift; sourceTree = "<group>"; };
+		689FF1651F17CCDF00004BD9 /* ApiService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
+		689FF1691F17D03900004BD9 /* NetworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		689FF16B1F17DBBE00004BD9 /* EpisodesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodesViewController.swift; sourceTree = "<group>"; };
 		B79ABFBB2BACC30B45E7208E /* Pods-GotEpisodes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GotEpisodes.release.xcconfig"; path = "Pods/Target Support Files/Pods-GotEpisodes/Pods-GotEpisodes.release.xcconfig"; sourceTree = "<group>"; };
 		BC4A70074C6DF4AC3261C18C /* Pods-GotEpisodes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GotEpisodes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GotEpisodes/Pods-GotEpisodes.debug.xcconfig"; sourceTree = "<group>"; };
 		CD11019434FA454C21F3CD10 /* Pods_GotEpisodes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GotEpisodes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -171,6 +180,8 @@
 		68818CB81F17B26C001D72DA /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				68818CC71F17BE7C001D72DA /* Episode.swift */,
+				689FF1691F17D03900004BD9 /* NetworkError.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -186,6 +197,8 @@
 		68818CBB1F17B26C001D72DA /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				68818CC91F17C998001D72DA /* ApiServiceProtocol.swift */,
+				689FF1651F17CCDF00004BD9 /* ApiService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -216,6 +229,7 @@
 		68818CC11F17B26C001D72DA /* VIews */ = {
 			isa = PBXGroup;
 			children = (
+				689FF16B1F17DBBE00004BD9 /* EpisodesViewController.swift */,
 			);
 			path = VIews;
 			sourceTree = "<group>";
@@ -364,7 +378,6 @@
 			files = (
 				68818CC51F17B26C001D72DA /* LaunchScreen.storyboard in Resources */,
 				68818CC41F17B26C001D72DA /* Assets.xcassets in Resources */,
-				68818CC31F17B26C001D72DA /* Info.plist in Resources */,
 				68818CC61F17B26C001D72DA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -528,7 +541,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				689FF16C1F17DBBE00004BD9 /* EpisodesViewController.swift in Sources */,
+				68818CCA1F17C998001D72DA /* ApiServiceProtocol.swift in Sources */,
 				68818CC21F17B26C001D72DA /* AppDelegate.swift in Sources */,
+				689FF1661F17CCDF00004BD9 /* ApiService.swift in Sources */,
+				68818CC81F17BE7C001D72DA /* Episode.swift in Sources */,
+				689FF16A1F17D03900004BD9 /* NetworkError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
