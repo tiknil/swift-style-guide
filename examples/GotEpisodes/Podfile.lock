@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (4.5.0)
-  - Himotoki (3.0.1)
+  - ObjectMapper (2.2.8)
   - ReactiveCocoa (6.0.0-rc.2):
     - ReactiveSwift (= 2.0.0-rc.2)
   - ReactiveSwift (2.0.0-rc.2):
@@ -11,20 +11,20 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.4)
-  - Himotoki (~> 3.0)
+  - ObjectMapper (~> 2.2)
   - ReactiveCocoa (= 6.0.0-rc.2)
   - Swinject (~> 2.1.0)
   - Timepiece (~> 1.2)
 
 SPEC CHECKSUMS:
   Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
-  Himotoki: 85fda41d4d0e14f7228317a3b474175cdfb8f515
+  ObjectMapper: 3d571bb5af471c779e1160828cd9ad5c4ef90958
   ReactiveCocoa: ed8daaac86500d55f5f65dafc0fbe5692f251a7a
   ReactiveSwift: b8ea244bd66fd841151a9146d4e2601a9acbaddf
   Result: 128640a6347e8d2ae48b142556739a2d13f90ce6
   Swinject: 85e468ac75c5c2d234076f98c591d57d56bc64bc
   Timepiece: d07900e985af4911f09146f1175fdbec37944836
 
-PODFILE CHECKSUM: 39c77b193d7574de266524a43ff2716757056f03
+PODFILE CHECKSUM: c65286cbb47c8ce3169ec0e35224db42b32ad195
 
 COCOAPODS: 1.2.1

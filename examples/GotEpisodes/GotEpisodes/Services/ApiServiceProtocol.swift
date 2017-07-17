@@ -6,6 +6,8 @@
 //  Copyright © 2017 tiknil. All rights reserved.
 //
 
+import ReactiveSwift
+
 public protocol ApiServiceProtocol {
-  func getEpisodes(success: @escaping ([Episode]) -> (), failure: @escaping (NetworkError) -> ())
+  func getEpisodes() -> SignalProducer<[Episode], NetworkError>
 }

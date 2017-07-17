@@ -1,14 +1,14 @@
 //
-//  EpisodesViewController.swift
+//  EpisodeTableViewCell.swift
 //  GotEpisodes
 //
-//  Created by Fabio Butti on 13/07/17.
+//  Created by Fabio Butti on 17/07/17.
 //  Copyright © 2017 tiknil. All rights reserved.
 //
 
 import UIKit
 
-class EpisodesViewController: UIViewController {
+public class EpisodeTableViewCell: UITableViewCell {
 
   // MARK: - Properties
   // MARK: Class
@@ -16,6 +16,12 @@ class EpisodesViewController: UIViewController {
   
   // MARK: Public
   
+  @IBOutlet weak var artwork: UIImageView!
+  @IBOutlet weak var title: UILabel!
+  @IBOutlet weak var season: UILabel!
+  @IBOutlet weak var number: UILabel!
+  @IBOutlet weak var airDate: UILabel!
+  @IBOutlet weak var summary: UILabel!
   
   // MARK: Private
   
@@ -25,17 +31,6 @@ class EpisodesViewController: UIViewController {
   
   
   // MARK: Lifecycle
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    
-    let api = ApiService(with: .development)
-    api.getEpisodes(success: { (episodes) in
-      print("SUCCESS: \(episodes)")
-    }) { (e) in
-      print("ERROR \(e)")
-    }
-  }
   
   
   // MARK: Custom accessors

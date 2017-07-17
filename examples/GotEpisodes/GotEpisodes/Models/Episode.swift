@@ -6,40 +6,58 @@
 //  Copyright © 2017 tiknil. All rights reserved.
 //
 
-import Himotoki
+import Foundation
+import ObjectMapper
 import Timepiece
 
-public struct Episode {
-  let id: String
+public class Episode : Mappable, CustomStringConvertible {
+  var id: Int?
   
-  let director: String
-  let airDate: Date
-  let totalNumber: Int
-  let seasonNumber: Int
-  let number: Int
-  let title: String
-  let characters: [String]
+  var title: String?
+  var season: Int?
+  var number: Int?
+  var airDate: Date?
+  var summary: String?
+  var imageUrl: String?
+  
+  // MARK: Mappable
+  public required init?(map: Map) {
+    
+  }
+  
+  public func mapping(map: Map) {
+    id                <- map["id"]
+    title             <- map["name"]
+    season            <- map["season"]
+    number            <- map["number"]
+    airDate           <- (map["airDate"], ApiDateTransformer())
+    summary           <- map["summary"]
+    imageUrl          <- map["image.medium"]
+  }
+  
+  public var description: String {
+    return title ?? ""
+  }
 }
 
-// MARK: Decodable
-extension Episode: Decodable {
-  public static func decode(_ e: Extractor) throws -> Episode {
-    let DateTransformer = Transformer<String, Date> { DateString throws -> Date in
-      if let date = DateString.date(inFormat: "yyyy-MM-ddTHH:mm:ss.SSSZ") {
-        return date
-      }
-      
-      throw customError("Invalid Date string: \(DateString)")
+public class ApiDateTransformer : TransformType {
+  public typealias Object = Date
+  public typealias JSON = String
+  public let dateFormat = "yyyy-MM-dd"
+  
+  public func transformFromJSON(_ value: Any?) -> Date? {
+    if let dateString = value as? String {
+      return dateString.date(inFormat: dateFormat)
     }
-    
-    return try Episode(
-      id: e <| "_id",
-      director: e <| "director",
-      airDate: try DateTransformer.apply(e <| "airDate"),
-      totalNumber: e <| "totalNr",
-      seasonNumber: e <| "season",
-      number: e <| "nr",
-      title: e <| "name",
-      characters: e <|| "characters")
+    return nil
+  }
+  
+  public func transformToJSON(_ value: Date?) -> String? {
+    guard let date = value else {
+      return nil
+    }
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = dateFormat
+    return dateFormatter.string(from: date)
   }
 }

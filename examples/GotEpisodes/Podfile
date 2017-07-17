@@ -9,7 +9,7 @@ target 'GotEpisodes' do
   pod 'Swinject', '~> 2.1.0' # Dependency injection
   pod 'ReactiveCocoa', '6.0.0-rc.2' # Functional Reactive Programming
   pod 'Alamofire', '~> 4.4' # Request http
-  pod "Himotoki", "~> 3.0" # Json parse
+  pod 'ObjectMapper', '~> 2.2' # Mapping json <=> object
   pod 'Timepiece', '~> 1.2' # Gestione evoluta delle date
 
   target 'GotEpisodesTests' do

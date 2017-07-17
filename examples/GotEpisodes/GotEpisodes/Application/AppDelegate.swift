@@ -7,15 +7,47 @@
 //
 
 import UIKit
+import Swinject
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
-
+  let container: Container = {
+    let container = Container()
+    
+    // Models
+    container.register(ApiServiceProtocol.self) { _ in
+      return ApiService(with: .development)
+    }
+    
+    // ViewModels
+    
+    // Views
+    container.register(UITabBarController.self) { r in
+      let tabBarController = UITabBarController()
+      tabBarController.viewControllers = [r.resolve(EpisodesTableViewController.self)!]
+      return tabBarController
+    }
+    container.register(EpisodesTableViewController.self) { r in
+      let bundle = Bundle(for: EpisodesTableViewController.self)
+      let episodesVc = UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "EpisodesTableViewController") as! EpisodesTableViewController
+      let episodesViewModel = EpisodesViewModel(viewController: episodesVc, apiService: r.resolve(ApiServiceProtocol.self)!)
+      episodesVc.viewModel = episodesViewModel
+      return episodesVc
+    }
+    
+    return container
+    
+  }()
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-    // Override point for customization after application launch.
+    // Creazione istanza window
+    let window = UIWindow(frame: UIScreen.main.bounds)
+    window.makeKeyAndVisible()
+    self.window = window    
+    window.rootViewController = container.resolve(UITabBarController.self)
+    
     return true
   }
 

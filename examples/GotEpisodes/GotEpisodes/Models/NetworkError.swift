@@ -35,7 +35,7 @@ public enum NetworkError: CustomNSError {
       case NSURLErrorCancelled:
         self = .unknown
       case NSURLErrorBadURL:
-        self = .incorrectDataReturned // Because it is caused by a bad URL returned in a JSON response from the server.
+        self = .incorrectDataReturned
       case NSURLErrorTimedOut:
         self = .notReachedServer
       case NSURLErrorUnsupportedURL:

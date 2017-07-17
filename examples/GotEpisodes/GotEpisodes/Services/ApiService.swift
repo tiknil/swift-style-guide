@@ -7,6 +7,8 @@
 //
 
 import Alamofire
+import ReactiveSwift
+import ObjectMapper
 
 public enum ApiEnvironment {
   case development
@@ -14,7 +16,7 @@ public enum ApiEnvironment {
   case production
 }
 
-public class ApiService: ApiServiceProtocol {
+public class ApiService {
   
   // MARK: - Properties
   // MARK: Class
@@ -28,21 +30,20 @@ public class ApiService: ApiServiceProtocol {
       switch environment {
       case .development:
         // Development ApiUrl
-        return "https://api.got.show/api/"
+        return "http://api.tvmaze.com/shows/82/"
       case .staging:
-        // Stagin ApiUrl
-        return "https://api.got.show/api/"
+        // Staging ApiUrl
+        return "http://api.tvmaze.com/shows/82/"
       case .production:
         // Production ApiUrl
-        return "https://api.got.show/api/"
+        return "http://api.tvmaze.com/shows/82/"
       }
     }
   }
   
   // MARK: Private
   
-  private let queue = DispatchQueue.global(qos: .background)
-  
+  internal let queue = DispatchQueue.global(qos: .background)
   
   
   // MARK: - Methods
@@ -64,24 +65,35 @@ public class ApiService: ApiServiceProtocol {
   
   // MARK: Public
   
-  public func getEpisodes(success: @escaping ([Episode]) -> (), failure: @escaping (NetworkError) -> ()) {
-    let endpoint = apiUrl.appending("episodes")
-    
-    Alamofire.request(endpoint).responseJSON(queue: queue) { response in
-      debugPrint(response)
-      
-      switch response.result {
-      case .success(_):
-        success([])
-      case .failure(_):
-        failure(.unknown)
-      }
-    }
-  }
   
   
   // MARK: Private
   
+}
+
+// MARK: ApiServiceProtocol
+extension ApiService : ApiServiceProtocol {
   
+  public func getEpisodes() -> SignalProducer<[Episode], NetworkError> {
+    let endpoint = apiUrl.appending("episodes")
+    
+    return SignalProducer { observer, disposable in
+      Alamofire.request(endpoint).responseJSON(queue: self.queue) { response in
+        debugPrint(response)
+        
+        switch response.result {
+        case .success(let jsonEpisodes):
+          if let episodes = Mapper<Episode>().mapArray(JSONObject: jsonEpisodes) {
+            observer.send(value: episodes)
+            observer.sendCompleted()
+          } else {
+            observer.send(error: NetworkError.incorrectDataReturned)
+          }
+        case .failure(let error):
+          observer.send(error: NetworkError(error: error as NSError))
+        }
+      }
+    }
+  }
   
 }
