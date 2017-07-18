@@ -13,40 +13,64 @@ import Swinject
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
-  let container: Container = {
+  public static let container: Container = {
     let container = Container()
     
-    // Models
+    //************* MODELS *************//
     container.register(ApiServiceProtocol.self) { _ in
-      return ApiService(with: .development)
+      return ApiService(with: .development) // Registrazione di una determinata implementazione di un protocollo di servizio
     }
     
-    // ViewModels
+    //************* VIEWMODELS *************//
+    container.register(EpisodesViewModel.self) { r in
+      return EpisodesViewModel(apiService: r.resolve(ApiServiceProtocol.self)!)
+    }
+    container.register(EpisodeDetailViewModel.self) { (r: Resolver, episode: Episode) in
+      return EpisodeDetailViewModel(episode: episode)
+    }
     
-    // Views
+    //************* VIEWS *************//
+    container.register(UINavigationController.self) { r in
+      // Registrazione dell'implementazione di default di un tipo di base di UIKit: in questo caso è il navigation controller root dell'applicazione
+      let navigationController = UINavigationController(rootViewController: r.resolve(UITabBarController.self)!)
+      return navigationController
+    }
     container.register(UITabBarController.self) { r in
+      // Registrazione dell'implementazione di default di un tipo di base di UIKit: in questo caso è il tabbarcontroller dell'applicazione
       let tabBarController = UITabBarController()
       tabBarController.viewControllers = [r.resolve(EpisodesTableViewController.self)!]
       return tabBarController
     }
     container.register(EpisodesTableViewController.self) { r in
+      // Registrazione del viewcontroller recuperandolo dallo storyboard
       let bundle = Bundle(for: EpisodesTableViewController.self)
       let episodesVc = UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "EpisodesTableViewController") as! EpisodesTableViewController
-      let episodesViewModel = EpisodesViewModel(viewController: episodesVc, apiService: r.resolve(ApiServiceProtocol.self)!)
-      episodesVc.viewModel = episodesViewModel
+      // Assegnazione del viewmodel
+      episodesVc.viewModel = r.resolve(EpisodesViewModel.self)
+      return episodesVc
+    }
+    container.register(EpisodeDetailViewController.self) { (r: Resolver, episode: Episode) in
+      // Registrazione del viewcontroller recuperandolo dallo storyboard
+      let bundle = Bundle(for: EpisodeDetailViewController.self)
+      let episodesVc = UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "EpisodeDetailViewController") as! EpisodeDetailViewController
+      // Assegnazione del viewmodel
+      episodesVc.viewModel = r.resolve(EpisodeDetailViewModel.self, argument: episode)
       return episodesVc
     }
     
     return container
     
   }()
+  public static var router: Router?
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     // Creazione istanza window
     let window = UIWindow(frame: UIScreen.main.bounds)
     window.makeKeyAndVisible()
-    self.window = window    
-    window.rootViewController = container.resolve(UITabBarController.self)
+    self.window = window
+    let nav = AppDelegate.container.resolve(UINavigationController.self)
+    window.rootViewController = nav
+    AppDelegate.router = Router(navigationController: nav!)
     
     return true
   }
@@ -72,7 +96,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationWillTerminate(_ application: UIApplication) {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
-
 
 }
 

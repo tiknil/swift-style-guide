@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import ReactiveSwift
+import ReactiveCocoa
 
 public class EpisodeTableViewCell: UITableViewCell {
 
@@ -21,7 +23,18 @@ public class EpisodeTableViewCell: UITableViewCell {
   @IBOutlet weak var season: UILabel!
   @IBOutlet weak var number: UILabel!
   @IBOutlet weak var airDate: UILabel!
-  @IBOutlet weak var summary: UILabel!
+  
+  var viewModel: EpisodeCellViewModel? {
+    didSet {
+      // Impostazione dei bind all'assegnazione del viewmodel
+      if let vm = viewModel {
+        title.reactive.text <~ vm.titleText
+        season.reactive.text <~ vm.seasonText
+        number.reactive.text <~ vm.numberText
+        airDate.reactive.text <~ vm.airDateText
+      }
+    }
+  }
   
   // MARK: Private
   

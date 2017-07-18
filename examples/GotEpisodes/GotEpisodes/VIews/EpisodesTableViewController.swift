@@ -18,9 +18,17 @@ public class EpisodesTableViewController: UITableViewController {
   
   public var viewModel: EpisodesViewModel? {
     didSet {
-      tableView.delegate = viewModel
-      tableView.dataSource = viewModel
-      viewModel?.updateEpisodes()
+      if let vm = viewModel {
+        // Assegnazione dei delegate della tableview al viewmodel
+        tableView.delegate = vm
+        tableView.dataSource = vm
+        // Observe dell'aggiornamento degli episodi
+        vm.episodesVm.signal.observeValues({ (episodesVm2) in
+          DispatchQueue.main.async {
+            self.tableView.reloadData()
+          }
+        })
+      }
     }
   }
   
@@ -34,11 +42,17 @@ public class EpisodesTableViewController: UITableViewController {
   
   // MARK: Lifecycle
   
+  public override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    tabBarItem = UITabBarItem(title: "Episodes", image: UIImage(named: "list"), tag: 0)
+    navigationItem.title = "Episodes"
+  }
+  
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    print("DIDAPPEAR")
-    tableView.reloadData()
+    viewModel?.updateEpisodes()
   }
   
   // MARK: Custom accessors

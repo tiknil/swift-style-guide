@@ -8,7 +8,9 @@
 
 import ReactiveSwift
 import ReactiveCocoa
+import Swinject
 
+// Questo viewmodel è un NSObject perché è necessario per implementare i protocolli UITableViewDelegate, UITableViewDataSource
 public class EpisodesViewModel: NSObject {
   
   // MARK: - Properties
@@ -17,17 +19,12 @@ public class EpisodesViewModel: NSObject {
   
   // MARK: Public
   
-  var episodes: [Episode] = [] {
-    didSet {
-      viewController.tableView.reloadData()
-    }
-  }
+  let episodesVm: MutableProperty<[EpisodeCellViewModel]> = MutableProperty([])
   
   
   // MARK: Private
   
   private let apiService: ApiServiceProtocol
-  private let viewController: EpisodesTableViewController
   
   
   // MARK: - Methods
@@ -36,8 +33,7 @@ public class EpisodesViewModel: NSObject {
   
   // MARK: Lifecycle
   
-  public init(viewController: EpisodesTableViewController, apiService: ApiServiceProtocol) {
-    self.viewController = viewController
+  public init(apiService: ApiServiceProtocol) {
     self.apiService = apiService
   }
   
@@ -58,8 +54,11 @@ public class EpisodesViewModel: NSObject {
         return
       }
       
-      print("Episodes: \(episodes)")
-      self.episodes = episodes
+      // Aggiorno la property degli episodi
+      self.episodesVm.value = episodes.map({ (episode) -> EpisodeCellViewModel in
+        // La property contiene direttamente i viewmodel, quindi eseguo il mapping Episode -> EpisodeCellViewModel
+        return EpisodeCellViewModel(episode: episode)
+      })
     }
   }
   
@@ -77,21 +76,23 @@ extension EpisodesViewModel : UITableViewDelegate, UITableViewDataSource {
   }
   
   public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return episodes.count
+    return episodesVm.value.count
   }
   
   public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "EpisodeCell", for: indexPath) as! EpisodeTableViewCell
     
-    //TODO: sarebbe da rendere più MVVM friendly tramite bindings
-    let episode = episodes[indexPath.row]
-    cell.title.text = episode.title
-    if let season = episode.season { cell.season.text = "Season: \(String(describing: season))" } else { cell.season.text = "Season: -" }
-    if let number = episode.number { cell.number.text = "Episode: \(String(describing: number))" } else { cell.number.text = "Episode: -" }
-    if let airDate = episode.airDate { cell.airDate.text = "Air date: \(String(describing: airDate))" } else { cell.airDate.text = "Air date: -" }
-    if let summary = episode.summary { cell.summary.text = "Summary: \(String(describing: summary))" } else { cell.summary.text = "Summary: -" }
+    // Bind tra cella e suo viewmodel
+    let episodeVm = episodesVm.value[indexPath.row]
+    cell.viewModel = episodeVm
     
     return cell
+  }
+  
+  public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    // Utilizzo del router per visualizzare la schermata di dettaglio
+    let episodeVm = episodesVm.value[indexPath.row]
+    AppDelegate.router?.pushRoutableView(view: .episodeDetail, animated: true, with: episodeVm.episode)
   }
   
 }
