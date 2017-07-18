@@ -7,7 +7,7 @@ L'obiettivo di questa applicazione è dimostrare l'utilizzo delle [best practice
 * [Inversion of Control Container](#inversion-of-control-container)
 * [MVVM](#mvvm)
 * [Binding](#binding)
-* [JSON Mapping](#mapping)
+* [JSON Mapping](#json-mapping)
 * [Services](#services)
 * [Routing](#routing)
 * [Testing](#testing)
@@ -114,7 +114,7 @@ class Client {
 ```
 
 ## Inversion of Control Container
-Per iniettare le dipendenze è molto comodo utilizzare un **IoC Container**. La libreria [Swinject](#https://github.com/Swinject/Swinject) ci mette a disposizione proprio questa funzionalità.
+Per iniettare le dipendenze è molto comodo utilizzare un **IoC Container**. La libreria [Swinject](https://github.com/Swinject/Swinject) ci mette a disposizione proprio questa funzionalità.
 
 Un **IoC Container** è un oggetto *singleton* che offre le seguenti funzionalità:
 * **Registrazione** di classi o interfacce: l'operazione di registrazione (*register*) definisce un modo univoco per creare un'implementazione della classe/interfaccia in oggetto.
@@ -122,7 +122,7 @@ Un **IoC Container** è un oggetto *singleton* che offre le seguenti funzionalit
 
 Queste semplici operazioni permettono di fornire un metodo unico per la creazione di istanze di classi/interfacce. Se tali istanze sono utilizzate come dipendenze è sufficiente cambiare la *registrazione* di tali dipendenze per modificare la dipendenza nell'intera applicazione.
 
-Nell'[AppDelegate](#https://github.com/tiknil/swift-style-guide/blob/master/examples/GotEpisodes/GotEpisodes/Application/AppDelegate.swift) è possibile vedere degli esempi di setup del **container** tramite **Swinject**.
+Nell'[AppDelegate](https://github.com/tiknil/swift-style-guide/blob/master/examples/GotEpisodes/GotEpisodes/Application/AppDelegate.swift) è possibile vedere degli esempi di setup del **container** tramite **Swinject**.
 
 
 ## MVVM
