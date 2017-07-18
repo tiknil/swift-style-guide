@@ -25,6 +25,10 @@ public class Episode : Mappable, CustomStringConvertible {
     
   }
   
+  init() {
+    
+  }
+  
   public func mapping(map: Map) {
     id                <- map["id"]
     title             <- map["name"]

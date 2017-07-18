@@ -15,11 +15,17 @@ target 'GotEpisodes' do
   target 'GotEpisodesTests' do
     inherit! :search_paths
     # Pods for testing
+    
+    pod 'Quick'
+    pod 'Nimble'
   end
 
   target 'GotEpisodesUITests' do
     inherit! :search_paths
     # Pods for testing
+    
+    pod 'Quick'
+    pod 'Nimble'
   end
 
 end

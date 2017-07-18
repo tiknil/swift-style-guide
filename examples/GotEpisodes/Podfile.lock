@@ -1,6 +1,8 @@
 PODS:
   - Alamofire (4.5.0)
+  - Nimble (7.0.1)
   - ObjectMapper (2.2.8)
+  - Quick (1.1.0)
   - ReactiveCocoa (6.0.0-rc.2):
     - ReactiveSwift (= 2.0.0-rc.2)
   - ReactiveSwift (2.0.0-rc.2):
@@ -11,20 +13,24 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.4)
+  - Nimble
   - ObjectMapper (~> 2.2)
+  - Quick
   - ReactiveCocoa (= 6.0.0-rc.2)
   - Swinject (~> 2.1.0)
   - Timepiece (~> 1.2)
 
 SPEC CHECKSUMS:
   Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
+  Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
   ObjectMapper: 3d571bb5af471c779e1160828cd9ad5c4ef90958
+  Quick: dafc587e21eed9f4cab3249b9f9015b0b7a7f71d
   ReactiveCocoa: ed8daaac86500d55f5f65dafc0fbe5692f251a7a
   ReactiveSwift: b8ea244bd66fd841151a9146d4e2601a9acbaddf
   Result: 128640a6347e8d2ae48b142556739a2d13f90ce6
   Swinject: 85e468ac75c5c2d234076f98c591d57d56bc64bc
   Timepiece: d07900e985af4911f09146f1175fdbec37944836
 
-PODFILE CHECKSUM: c65286cbb47c8ce3169ec0e35224db42b32ad195
+PODFILE CHECKSUM: 23b0a330f19c0cdfbef3e39bdbbcde55c32d0f0a
 
 COCOAPODS: 1.2.1
