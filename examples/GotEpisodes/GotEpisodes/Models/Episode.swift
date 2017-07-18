@@ -34,7 +34,7 @@ public class Episode : Mappable, CustomStringConvertible {
     title             <- map["name"]
     season            <- map["season"]
     number            <- map["number"]
-    airDate           <- (map["airDate"], ApiDateTransformer())
+    airDate           <- (map["airdate"], ApiDateTransformer())
     summary           <- map["summary"]
     imageUrl          <- map["image.medium"]
   }

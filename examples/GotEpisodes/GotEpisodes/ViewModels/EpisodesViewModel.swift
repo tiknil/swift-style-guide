@@ -47,8 +47,7 @@ public class EpisodesViewModel: NSObject {
   // MARK: Public
   
   public func updateEpisodes() {
-    let api = ApiService(with: .development)
-    api.getEpisodes().startWithResult { response in
+    self.apiService.getEpisodes().startWithResult { response in
       guard let episodes = response.value else {
         print("Error: \(response.error!)")
         return
