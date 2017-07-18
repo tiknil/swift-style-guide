@@ -22,9 +22,11 @@ In generale **Tiknil adotta tutte le linee guida di RayWenderlich** e in questo 
 * [Design pattern](#design-pattern)
   * [MVC](#mvc)
   * [MVVM](#mvvm)
+  * [Inversion of Control e Dependency Injection](#inversion-of-control-e-dependency-injection)
 * [Struttura del progetto](#struttura-del-progetto)
   * [Repository e CocoaPods](#repository-e-cocoapods)
   * [Cartelle di progetto](#cartelle-di-progetto)
+* [Esempio pratico](#esempio-pratico)
 
 ## Naming
 Per facilitare la lettura del codice seguiamo i soprattutto i seguenti principi:
@@ -260,6 +262,19 @@ Ciò introduce i seguenti vantaggi:
 
 Per un'analisi più dettagliata dell'evoluzione MVC => MVVM leggere [questo articolo](https://www.objc.io/issues/13-architecture/mvvm/) di **Ash Furrow**.
 
+### Inversion of Control e Dependency Injection
+L'*Inversion of Control* (**IoC**) è un *software design pattern* secondo il quale ogni componente dell'applicazione deve ricevere il **controllo** da un componente appartenente ad una **libreria riusabile**.<br>
+L'obiettivo è quello di rendere ogni componente il più indipendente possibile dagli altri in modo che ognuno sia modificabile singolarmente con conseguente maggior riusabilità e manutenibilità.
+
+La *Dependency Injection* (**DI**) è una forma di *IoC* dove l'implementazione del pattern avviene stabilendo le dipendenze tra un componente e l'altro tramite delle *interfacce* (chiamate **interface contracts**).<br>
+A tali interfacce viene associata un'implementazione in fase di istanziazione del componente (nel *costruttore*) oppure in un secondo momento tramite *setter*.<br>
+In ogni caso è generalmente presente un oggetto **container** che si occupa di creare le istanze di ogni *interfaccia*; la configurazione di tale *container* può così influenzare le dipendenze tra i vari componenti.<br>
+L'utilizzo della *DI* è molto utile per la realizzazione di test automatici, infatti modificando il *container* è possibile *mockare* le dipendenze che non si desidera testare.
+
+References:
+
+* [Semplice video che chiarisce il concetto di DI](https://www.youtube.com/watch?v=IKD2-MAkXyQ)
+
 ## Struttura del progetto
 Nelle seguenti sezioni definiamo le best practices di Tiknil per l'impostazione di un progetto iOS in Swift chiamato **AwesomeApp**.
 
@@ -301,3 +316,8 @@ La cartella contenente il codice sorgente dell'app avrà la seguente struttura:
 ```
 
 Le cartelle al primo livello le creiamo fisicamente nel file system e le importiamo in modo che creino il gruppo logico nel progetto Xcode, mentre quelle al secondo livello possiamo anche lasciarle solo come gruppi logici.
+
+### Esempio pratico
+Al seguente link è disponibile il codice di un'applicazione di esempio che integra tutte le **best practice** definite in questo documento:
+
+[GotEpisodes](https://github.com/tiknil/swift-style-guide/tree/master/examples/GotEpisodes)
