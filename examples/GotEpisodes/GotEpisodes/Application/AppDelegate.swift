@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       return EpisodesViewModel(apiService: r.resolve(ApiServiceProtocol.self)!)
     }
     container.register(EpisodeDetailViewModel.self) { (r: Resolver, episode: Episode) in
-      return EpisodeDetailViewModel(episode: episode)
+      return EpisodeDetailViewModel(apiService: r.resolve(ApiServiceProtocol.self)!, episode: episode)
     }
     
     //************* VIEWS *************//

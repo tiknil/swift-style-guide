@@ -23,18 +23,12 @@ class EpisodesViewModel: BaseViewModel {
   
   // MARK: Private
   
-  private let apiService: ApiServiceProtocol
-  
   
   // MARK: - Methods
   // MARK: Class
   
   
   // MARK: Lifecycle
-  
-  public init(apiService: ApiServiceProtocol) {
-    self.apiService = apiService
-  }
   
   
   // MARK: Custom accessors

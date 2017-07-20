@@ -22,6 +22,9 @@
 		68950AC91F20B2D000B58304 /* TkMvvmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68950AC61F20B2D000B58304 /* TkMvvmView.swift */; };
 		68950ACA1F20B2D000B58304 /* TkMvvmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68950AC71F20B2D000B58304 /* TkMvvmViewModel.swift */; };
 		68950ACC1F20B40E00B58304 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68950ACB1F20B40E00B58304 /* BaseViewModel.swift */; };
+		68950AD41F20F3BE00B58304 /* UIView+NibLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68950AD11F20F3BE00B58304 /* UIView+NibLoading.swift */; };
+		68950AD51F20F3BE00B58304 /* UIView+IBAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68950AD21F20F3BE00B58304 /* UIView+IBAdditions.swift */; };
+		68950AD61F20F3BE00B58304 /* UIView+AutoLayoutHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68950AD31F20F3BE00B58304 /* UIView+AutoLayoutHelpers.swift */; };
 		689FF1661F17CCDF00004BD9 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FF1651F17CCDF00004BD9 /* ApiService.swift */; };
 		689FF16A1F17D03900004BD9 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FF1691F17D03900004BD9 /* NetworkError.swift */; };
 		689FF16C1F17DBBE00004BD9 /* EpisodesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FF16B1F17DBBE00004BD9 /* EpisodesTableViewController.swift */; };
@@ -75,8 +78,11 @@
 		68950AC61F20B2D000B58304 /* TkMvvmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TkMvvmView.swift; sourceTree = "<group>"; };
 		68950AC71F20B2D000B58304 /* TkMvvmViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TkMvvmViewModel.swift; sourceTree = "<group>"; };
 		68950ACB1F20B40E00B58304 /* BaseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		68950AD11F20F3BE00B58304 /* UIView+NibLoading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+NibLoading.swift"; sourceTree = "<group>"; };
+		68950AD21F20F3BE00B58304 /* UIView+IBAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+IBAdditions.swift"; sourceTree = "<group>"; };
+		68950AD31F20F3BE00B58304 /* UIView+AutoLayoutHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayoutHelpers.swift"; sourceTree = "<group>"; };
 		689FF1651F17CCDF00004BD9 /* ApiService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
-		689FF1691F17D03900004BD9 /* NetworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		689FF1691F17D03900004BD9 /* NetworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkError.swift; path = ../Models/NetworkError.swift; sourceTree = "<group>"; };
 		689FF16B1F17DBBE00004BD9 /* EpisodesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodesTableViewController.swift; sourceTree = "<group>"; };
 		689FF16D1F1D058400004BD9 /* EpisodeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeTableViewCell.swift; sourceTree = "<group>"; };
 		689FF1701F1D05D700004BD9 /* EpisodesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodesViewModel.swift; sourceTree = "<group>"; };
@@ -198,6 +204,8 @@
 			isa = PBXGroup;
 			children = (
 				68950AC41F20B2D000B58304 /* TkMvvm */,
+				68950AD81F20F3E500B58304 /* Networking */,
+				68950ADA1F20F40700B58304 /* UI */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -206,7 +214,6 @@
 			isa = PBXGroup;
 			children = (
 				68818CC71F17BE7C001D72DA /* Episode.swift */,
-				689FF1691F17D03900004BD9 /* NetworkError.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -273,6 +280,24 @@
 				68950AC71F20B2D000B58304 /* TkMvvmViewModel.swift */,
 			);
 			path = TkMvvm;
+			sourceTree = "<group>";
+		};
+		68950AD81F20F3E500B58304 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				689FF1691F17D03900004BD9 /* NetworkError.swift */,
+			);
+			name = Networking;
+			sourceTree = "<group>";
+		};
+		68950ADA1F20F40700B58304 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				68950AD11F20F3BE00B58304 /* UIView+NibLoading.swift */,
+				68950AD21F20F3BE00B58304 /* UIView+IBAdditions.swift */,
+				68950AD31F20F3BE00B58304 /* UIView+AutoLayoutHelpers.swift */,
+			);
+			name = UI;
 			sourceTree = "<group>";
 		};
 		689FF16F1F1D058A00004BD9 /* Reusable */ = {
@@ -600,9 +625,12 @@
 				68E7F83E1F1E0F9D00F04AB7 /* EpisodeDetailViewController.swift in Sources */,
 				68818CCA1F17C998001D72DA /* ApiServiceProtocol.swift in Sources */,
 				68818CC21F17B26C001D72DA /* AppDelegate.swift in Sources */,
+				68950AD51F20F3BE00B58304 /* UIView+IBAdditions.swift in Sources */,
 				689FF1661F17CCDF00004BD9 /* ApiService.swift in Sources */,
 				68818CC81F17BE7C001D72DA /* Episode.swift in Sources */,
+				68950AD61F20F3BE00B58304 /* UIView+AutoLayoutHelpers.swift in Sources */,
 				689FF16A1F17D03900004BD9 /* NetworkError.swift in Sources */,
+				68950AD41F20F3BE00B58304 /* UIView+NibLoading.swift in Sources */,
 				68950ACA1F20B2D000B58304 /* TkMvvmViewModel.swift in Sources */,
 				68E7F83C1F1E0F5E00F04AB7 /* EpisodeDetailViewModel.swift in Sources */,
 			);

@@ -8,6 +8,6 @@
 
 import ReactiveSwift
 
-public protocol ApiServiceProtocol {
+protocol ApiServiceProtocol {
   func getEpisodes() -> SignalProducer<[Episode], NetworkError>
 }

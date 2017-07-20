@@ -34,7 +34,9 @@ class EpisodeDetailViewModel: BaseViewModel {
   
   // MARK: Lifecycle
   
-  public init(episode: Episode) {
+  public init(apiService: ApiServiceProtocol, episode: Episode) {
+    super.init(apiService: apiService)
+    
     imageUrl.value = episode.imageUrl ?? ""
     titleText.value = episode.title ?? ""
     seasonText.value = (episode.season != nil) ? String(describing: episode.season!) : "-"

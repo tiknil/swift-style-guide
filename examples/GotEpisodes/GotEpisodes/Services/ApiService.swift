@@ -10,13 +10,13 @@ import Alamofire
 import ReactiveSwift
 import ObjectMapper
 
-public enum ApiEnvironment {
+enum ApiEnvironment {
   case development
   case staging
   case production
 }
 
-public class ApiService {
+class ApiService {
   
   // MARK: - Properties
   // MARK: Class

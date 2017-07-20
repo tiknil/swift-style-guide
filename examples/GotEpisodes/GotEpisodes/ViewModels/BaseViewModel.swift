@@ -25,6 +25,7 @@ class BaseViewModel: TkMvvmViewModel {
   
   // Questo oggeto va OBBLIGATORIAMENTE creato lazy in modo che non crei riferimenti circolari in fase di resolve nell'IoC Container
   internal lazy var router: TkMvvmRouterProtocol = AppDelegate.container.resolve(TkMvvmRouterProtocol.self)!
+  internal let apiService: ApiServiceProtocol
   
   
   // MARK: - Methods
@@ -32,6 +33,10 @@ class BaseViewModel: TkMvvmViewModel {
   
   
   // MARK: Lifecycle
+  
+  init(apiService: ApiServiceProtocol) {
+    self.apiService = apiService
+  }
   
   
   // MARK: Custom accessors

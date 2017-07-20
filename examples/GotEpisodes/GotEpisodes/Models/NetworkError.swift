@@ -1,30 +1,23 @@
 //
 //  NetworkError.swift
-//  GotEpisodes
 //
 //  Created by Fabio Butti on 13/07/17.
-//  Copyright © 2017 tiknil. All rights reserved.
+//  Copyright © 2017 Tiknil. All rights reserved.
 //
 
 import Foundation
 
-public enum NetworkError: CustomNSError {
-  /// unknown or not supported error.
+enum NetworkError: CustomNSError {
   case unknown
   
-  /// Not connected to the internet.
   case notConnectedToInternet
   
-  /// International data roaming turned off.
   case internationalRoamingOff
   
-  /// Cannot reach the server.
   case notReachedServer
   
-  /// Connection is lost.
   case connectionLost
   
-  /// Incorrect data returned from the server.
   case incorrectDataReturned
   
   internal init(error: NSError) {
