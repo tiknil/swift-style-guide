@@ -22,6 +22,9 @@ class ContainerSpec: QuickSpec {
       it("Resolve every service") {
         let episode = Episode()
         
+        //************* HELPERS *************//
+        expect(container.resolve(TkMvvmRouterProtocol.self)).notTo(beNil())
+        
         //************* MODELS *************//
         expect(container.resolve(ApiServiceProtocol.self)).notTo(beNil())
         
@@ -30,14 +33,16 @@ class ContainerSpec: QuickSpec {
         expect(container.resolve(EpisodeDetailViewModel.self, argument: episode)).notTo(beNil())
         
         //************* VIEWS *************//
+        expect(container.resolve(UINavigationController.self)).notTo(beNil())
+        expect(container.resolve(UITabBarController.self)).notTo(beNil())
         expect(container.resolve(EpisodesTableViewController.self)).notTo(beNil())
-        expect(container.resolve(EpisodeDetailViewController.self, argument: episode)).notTo(beNil())
+        expect(container.resolve(EpisodeDetailViewController.self, argument: episode as? Any)).notTo(beNil())
       }
       
       it("Injects viewmodels to views") {
         // Arrange: risoluzione delle view
         let episodes = container.resolve(EpisodesTableViewController.self)
-        let episodeDetail = container.resolve(EpisodeDetailViewController.self, argument: Episode())
+        let episodeDetail = container.resolve(EpisodeDetailViewController.self, argument: Episode() as? Any)
         
         // Assert: controllo che i viewmodels siano presenti
         expect(episodes?.viewModel).notTo(beNil())
