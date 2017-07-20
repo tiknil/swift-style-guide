@@ -18,6 +18,10 @@
 		68818CC61F17B26C001D72DA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68818CBE1F17B26C001D72DA /* Main.storyboard */; };
 		68818CC81F17BE7C001D72DA /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68818CC71F17BE7C001D72DA /* Episode.swift */; };
 		68818CCA1F17C998001D72DA /* ApiServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68818CC91F17C998001D72DA /* ApiServiceProtocol.swift */; };
+		68950AC81F20B2D000B58304 /* TkMvvmRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68950AC51F20B2D000B58304 /* TkMvvmRouter.swift */; };
+		68950AC91F20B2D000B58304 /* TkMvvmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68950AC61F20B2D000B58304 /* TkMvvmView.swift */; };
+		68950ACA1F20B2D000B58304 /* TkMvvmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68950AC71F20B2D000B58304 /* TkMvvmViewModel.swift */; };
+		68950ACC1F20B40E00B58304 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68950ACB1F20B40E00B58304 /* BaseViewModel.swift */; };
 		689FF1661F17CCDF00004BD9 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FF1651F17CCDF00004BD9 /* ApiService.swift */; };
 		689FF16A1F17D03900004BD9 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FF1691F17D03900004BD9 /* NetworkError.swift */; };
 		689FF16C1F17DBBE00004BD9 /* EpisodesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FF16B1F17DBBE00004BD9 /* EpisodesTableViewController.swift */; };
@@ -26,7 +30,6 @@
 		68E7F8351F1DFA5700F04AB7 /* EpisodeCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E7F8341F1DFA5700F04AB7 /* EpisodeCellViewModel.swift */; };
 		68E7F83C1F1E0F5E00F04AB7 /* EpisodeDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E7F83B1F1E0F5E00F04AB7 /* EpisodeDetailViewModel.swift */; };
 		68E7F83E1F1E0F9D00F04AB7 /* EpisodeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E7F83D1F1E0F9D00F04AB7 /* EpisodeDetailViewController.swift */; };
-		68E7F8401F1E30F600F04AB7 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E7F83F1F1E30F600F04AB7 /* Router.swift */; };
 		8698AF0C2FA323F421CA144C /* Pods_GotEpisodesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0593214BCD8780A3E48F6A77 /* Pods_GotEpisodesTests.framework */; };
 		D6F8DD92791A6487E1B992EB /* Pods_GotEpisodes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD11019434FA454C21F3CD10 /* Pods_GotEpisodes.framework */; };
 /* End PBXBuildFile section */
@@ -68,6 +71,10 @@
 		68818CBE1F17B26C001D72DA /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		68818CC71F17BE7C001D72DA /* Episode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		68818CC91F17C998001D72DA /* ApiServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiServiceProtocol.swift; sourceTree = "<group>"; };
+		68950AC51F20B2D000B58304 /* TkMvvmRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TkMvvmRouter.swift; sourceTree = "<group>"; };
+		68950AC61F20B2D000B58304 /* TkMvvmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TkMvvmView.swift; sourceTree = "<group>"; };
+		68950AC71F20B2D000B58304 /* TkMvvmViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TkMvvmViewModel.swift; sourceTree = "<group>"; };
+		68950ACB1F20B40E00B58304 /* BaseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		689FF1651F17CCDF00004BD9 /* ApiService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		689FF1691F17D03900004BD9 /* NetworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		689FF16B1F17DBBE00004BD9 /* EpisodesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodesTableViewController.swift; sourceTree = "<group>"; };
@@ -76,7 +83,6 @@
 		68E7F8341F1DFA5700F04AB7 /* EpisodeCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeCellViewModel.swift; sourceTree = "<group>"; };
 		68E7F83B1F1E0F5E00F04AB7 /* EpisodeDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeDetailViewModel.swift; sourceTree = "<group>"; };
 		68E7F83D1F1E0F9D00F04AB7 /* EpisodeDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeDetailViewController.swift; sourceTree = "<group>"; };
-		68E7F83F1F1E30F600F04AB7 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		B79ABFBB2BACC30B45E7208E /* Pods-GotEpisodes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GotEpisodes.release.xcconfig"; path = "Pods/Target Support Files/Pods-GotEpisodes/Pods-GotEpisodes.release.xcconfig"; sourceTree = "<group>"; };
 		BC4A70074C6DF4AC3261C18C /* Pods-GotEpisodes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GotEpisodes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GotEpisodes/Pods-GotEpisodes.debug.xcconfig"; sourceTree = "<group>"; };
 		CD11019434FA454C21F3CD10 /* Pods_GotEpisodes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GotEpisodes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -184,7 +190,6 @@
 		68818CB61F17B26C001D72DA /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				68E7F83F1F1E30F600F04AB7 /* Router.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -192,6 +197,7 @@
 		68818CB71F17B26C001D72DA /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				68950AC41F20B2D000B58304 /* TkMvvm */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -241,6 +247,7 @@
 		68818CC01F17B26C001D72DA /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				68950ACB1F20B40E00B58304 /* BaseViewModel.swift */,
 				689FF1701F1D05D700004BD9 /* EpisodesViewModel.swift */,
 				68E7F8341F1DFA5700F04AB7 /* EpisodeCellViewModel.swift */,
 				68E7F83B1F1E0F5E00F04AB7 /* EpisodeDetailViewModel.swift */,
@@ -256,6 +263,16 @@
 				689FF16F1F1D058A00004BD9 /* Reusable */,
 			);
 			path = VIews;
+			sourceTree = "<group>";
+		};
+		68950AC41F20B2D000B58304 /* TkMvvm */ = {
+			isa = PBXGroup;
+			children = (
+				68950AC51F20B2D000B58304 /* TkMvvmRouter.swift */,
+				68950AC61F20B2D000B58304 /* TkMvvmView.swift */,
+				68950AC71F20B2D000B58304 /* TkMvvmViewModel.swift */,
+			);
+			path = TkMvvm;
 			sourceTree = "<group>";
 		};
 		689FF16F1F1D058A00004BD9 /* Reusable */ = {
@@ -574,16 +591,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				689FF16C1F17DBBE00004BD9 /* EpisodesTableViewController.swift in Sources */,
+				68950AC91F20B2D000B58304 /* TkMvvmView.swift in Sources */,
 				689FF16E1F1D058400004BD9 /* EpisodeTableViewCell.swift in Sources */,
+				68950AC81F20B2D000B58304 /* TkMvvmRouter.swift in Sources */,
 				689FF1711F1D05D700004BD9 /* EpisodesViewModel.swift in Sources */,
+				68950ACC1F20B40E00B58304 /* BaseViewModel.swift in Sources */,
 				68E7F8351F1DFA5700F04AB7 /* EpisodeCellViewModel.swift in Sources */,
-				68E7F8401F1E30F600F04AB7 /* Router.swift in Sources */,
 				68E7F83E1F1E0F9D00F04AB7 /* EpisodeDetailViewController.swift in Sources */,
 				68818CCA1F17C998001D72DA /* ApiServiceProtocol.swift in Sources */,
 				68818CC21F17B26C001D72DA /* AppDelegate.swift in Sources */,
 				689FF1661F17CCDF00004BD9 /* ApiService.swift in Sources */,
 				68818CC81F17BE7C001D72DA /* Episode.swift in Sources */,
 				689FF16A1F17D03900004BD9 /* NetworkError.swift in Sources */,
+				68950ACA1F20B2D000B58304 /* TkMvvmViewModel.swift in Sources */,
 				68E7F83C1F1E0F5E00F04AB7 /* EpisodeDetailViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

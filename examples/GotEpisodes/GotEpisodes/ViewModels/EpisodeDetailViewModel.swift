@@ -9,7 +9,7 @@
 import ReactiveCocoa
 import ReactiveSwift
 
-public class EpisodeDetailViewModel {
+class EpisodeDetailViewModel: BaseViewModel {
   
   // MARK: - Properties
   // MARK: Class

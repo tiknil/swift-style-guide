@@ -10,7 +10,7 @@ import UIKit
 import ReactiveSwift
 import ReactiveCocoa
 
-public class EpisodeDetailViewController: UIViewController {
+class EpisodeDetailViewController: TkMvvmViewController<EpisodeDetailViewModel> {
 
   // MARK: - Properties
   // MARK: Class
@@ -24,11 +24,6 @@ public class EpisodeDetailViewController: UIViewController {
   @IBOutlet weak var episodeLbl: UILabel!
   @IBOutlet weak var airDateLbl: UILabel!
   @IBOutlet weak var summaryLbl: UILabel!
-  var viewModel: EpisodeDetailViewModel? {
-    didSet {
-      setupBindings()
-    }
-  }
   
   
   // MARK: Private
@@ -40,10 +35,19 @@ public class EpisodeDetailViewController: UIViewController {
   
   // MARK: Lifecycle
   
-  public override func viewDidLoad() {
-    super.viewDidLoad()
+  override func setupBindings() {
+    super.setupBindings()
     
-    setupBindings()
+    // Lo eseguo solo se viewmodel e outlets sono istanziati
+    if let vm = viewModel,
+      let _ = titleLbl {
+      // Binding sul viewmodel
+      titleLbl.reactive.text <~ vm.titleText
+      seasonLbl.reactive.text <~ vm.seasonText
+      episodeLbl.reactive.text <~ vm.numberText
+      airDateLbl.reactive.text <~ vm.airDateText
+      summaryLbl.reactive.text <~ vm.summaryText
+    }
   }
   
   
@@ -58,17 +62,5 @@ public class EpisodeDetailViewController: UIViewController {
   
   // MARK: Private
   
-  func setupBindings() {
-    // Lo eseguo solo se viewmodel e outlets sono istanziati
-    if let vm = viewModel,
-      let _ = titleLbl {
-      // Binding sul viewmodel
-      titleLbl.reactive.text <~ vm.titleText
-      seasonLbl.reactive.text <~ vm.seasonText
-      episodeLbl.reactive.text <~ vm.numberText
-      airDateLbl.reactive.text <~ vm.airDateText
-      summaryLbl.reactive.text <~ vm.summaryText
-    }
-  }
 
 }

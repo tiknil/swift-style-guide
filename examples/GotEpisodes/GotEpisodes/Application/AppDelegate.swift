@@ -16,6 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   public static let container: Container = {
     let container = Container()
     
+    //************* HELPERS *************//
+    container.register(TkMvvmRouterProtocol.self) { r in
+      TkMvvmRouter(navigationController: r.resolve(UINavigationController.self)!, container: container)
+      }.inObjectScope(.container)
+    
     //************* MODELS *************//
     container.register(ApiServiceProtocol.self) { _ in
       return ApiService(with: .development) // Registrazione di una determinata implementazione di un protocollo di servizio
@@ -43,34 +48,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     container.register(EpisodesTableViewController.self) { r in
       // Registrazione del viewcontroller recuperandolo dallo storyboard
-      let bundle = Bundle(for: EpisodesTableViewController.self)
-      let episodesVc = UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "EpisodesTableViewController") as! EpisodesTableViewController
+      let vc = EpisodesTableViewController.instantiateFrom(storyboardWithName: "Main")
       // Assegnazione del viewmodel
-      episodesVc.viewModel = r.resolve(EpisodesViewModel.self)
-      return episodesVc
+      vc.viewModel = r.resolve(EpisodesViewModel.self)
+      return vc as! EpisodesTableViewController
     }
-    container.register(EpisodeDetailViewController.self) { (r: Resolver, episode: Episode) in
+    container.register(EpisodeDetailViewController.self) { (r: Resolver, episode: Any?) in
       // Registrazione del viewcontroller recuperandolo dallo storyboard
-      let bundle = Bundle(for: EpisodeDetailViewController.self)
-      let episodesVc = UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "EpisodeDetailViewController") as! EpisodeDetailViewController
+      let vc = EpisodeDetailViewController.instantiateFrom(storyboardWithName: "Main")
       // Assegnazione del viewmodel
-      episodesVc.viewModel = r.resolve(EpisodeDetailViewModel.self, argument: episode)
-      return episodesVc
+      vc.viewModel = r.resolve(EpisodeDetailViewModel.self, argument: episode as! Episode)
+      return vc as! EpisodeDetailViewController
     }
     
     return container
     
   }()
-  public static var router: Router?
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    
     // Creazione istanza window
     let window = UIWindow(frame: UIScreen.main.bounds)
     window.makeKeyAndVisible()
     self.window = window
-    let nav = AppDelegate.container.resolve(UINavigationController.self)
-    window.rootViewController = nav
-    AppDelegate.router = Router(navigationController: nav!)
+    
+    // Assegnazione prima schermata
+    let router = AppDelegate.container.resolve(TkMvvmRouterProtocol.self) as! TkMvvmRouter
+    window.rootViewController = router.navigationController
     
     return true
   }

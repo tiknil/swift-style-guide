@@ -10,7 +10,7 @@ import UIKit
 import ReactiveSwift
 import ReactiveCocoa
 
-public class EpisodeTableViewCell: UITableViewCell {
+class EpisodeTableViewCell: UITableViewCell {
 
   // MARK: - Properties
   // MARK: Class

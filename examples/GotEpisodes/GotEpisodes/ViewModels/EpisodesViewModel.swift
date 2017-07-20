@@ -10,8 +10,7 @@ import ReactiveSwift
 import ReactiveCocoa
 import Swinject
 
-// Questo viewmodel è un NSObject perché è necessario per implementare i protocolli UITableViewDelegate, UITableViewDataSource
-public class EpisodesViewModel: NSObject {
+class EpisodesViewModel: BaseViewModel {
   
   // MARK: - Properties
   // MARK: Class
@@ -91,7 +90,7 @@ extension EpisodesViewModel : UITableViewDelegate, UITableViewDataSource {
   public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     // Utilizzo del router per visualizzare la schermata di dettaglio
     let episodeVm = episodesVm.value[indexPath.row]
-    AppDelegate.router?.pushRoutableView(view: .episodeDetail, animated: true, with: episodeVm.episode)
+    router.pushView(view: EpisodeDetailViewController.self, animated: true, with: episodeVm.episode)
   }
   
 }

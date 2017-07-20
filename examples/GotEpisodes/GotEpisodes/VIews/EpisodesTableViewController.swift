@@ -8,29 +8,13 @@
 
 import UIKit
 
-public class EpisodesTableViewController: UITableViewController {
+class EpisodesTableViewController: TkMvvmTableViewController<EpisodesViewModel> {
 
   // MARK: - Properties
   // MARK: Class
   
   
   // MARK: Public
-  
-  public var viewModel: EpisodesViewModel? {
-    didSet {
-      if let vm = viewModel {
-        // Assegnazione dei delegate della tableview al viewmodel
-        tableView.delegate = vm
-        tableView.dataSource = vm
-        // Observe dell'aggiornamento degli episodi
-        vm.episodesVm.signal.observeValues({ (episodesVm2) in
-          DispatchQueue.main.async {
-            self.tableView.reloadData()
-          }
-        })
-      }
-    }
-  }
   
   
   // MARK: Private
@@ -45,14 +29,28 @@ public class EpisodesTableViewController: UITableViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
     
+    // Impostazione navigation bar
     tabBarItem = UITabBarItem(title: "Episodes", image: UIImage(named: "list"), tag: 0)
     navigationItem.title = "Episodes"
+    
+    // Aggiornamento lista episodi da ViewModel
+    viewModel?.updateEpisodes()
   }
   
-  public override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+  override func setupBindings() {
+    super.setupBindings()
     
-    viewModel?.updateEpisodes()
+    if let vm = viewModel {
+      // Assegnazione dei delegate della tableview al viewmodel
+      tableView.delegate = vm
+      tableView.dataSource = vm
+      // Observe dell'aggiornamento degli episodi
+      vm.episodesVm.signal.observeValues({ (episodesVm2) in
+        DispatchQueue.main.async {
+          self.tableView.reloadData()
+        }
+      })
+    }
   }
   
   // MARK: Custom accessors

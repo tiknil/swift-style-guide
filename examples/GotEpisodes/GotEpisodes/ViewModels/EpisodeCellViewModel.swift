@@ -9,7 +9,10 @@
 import ReactiveCocoa
 import ReactiveSwift
 
-public class EpisodeCellViewModel {
+/**
+ Nel caso di ViewModel legati a UIView possiamo evitare di ereditare da TkMvvmViewModel perché i metodi utili sono legati solo agli stati di caricamento del ViewController
+ */
+class EpisodeCellViewModel {
   
   // MARK: - Properties
   // MARK: Class
