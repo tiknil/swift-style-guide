@@ -56,7 +56,7 @@ Qualsiasi altra cosa in `LowerCamelCase`
 👍
 ```Swift
 class MyAwesomeClass { ... }
-struct MyAwesomStruct { ... }
+struct MyAwesomeStruct { ... }
 let constant = "http://www.tiknil.com"
 var variable = 3
 ```
