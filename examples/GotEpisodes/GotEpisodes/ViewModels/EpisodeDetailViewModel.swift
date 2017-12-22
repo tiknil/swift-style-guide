@@ -17,7 +17,7 @@ class EpisodeDetailViewModel: BaseViewModel {
   
   // MARK: Public
   
-  let imageUrl = MutableProperty("")
+  let imageUrl: MutableProperty<URL?> = MutableProperty(nil)
   let titleText = MutableProperty("")
   let seasonText = MutableProperty("")
   let numberText = MutableProperty("")
@@ -37,12 +37,12 @@ class EpisodeDetailViewModel: BaseViewModel {
   public init(apiService: ApiServiceProtocol, episode: Episode) {
     super.init(apiService: apiService)
     
-    imageUrl.value = episode.imageUrl ?? ""
-    titleText.value = episode.title ?? ""
-    seasonText.value = (episode.season != nil) ? String(describing: episode.season!) : "-"
-    numberText.value = (episode.number != nil) ? String(describing: episode.number!) : "-"
-    airDateText.value = episode.airDate?.dateString(in: .short) ?? "-"
-    summaryText.value = episode.summary?.replacingOccurrences(of: "<p>", with: "").replacingOccurrences(of: "</p>", with: "") ?? "-"
+    imageUrl.value = episode.image.originalUrl
+    titleText.value = episode.title
+    seasonText.value = String(describing: episode.season)
+    numberText.value = String(describing: episode.number)
+    airDateText.value = episode.airDate.stringIn(dateStyle: .short, timeStyle: .short)
+    summaryText.value = episode.summary.replacingOccurrences(of: "<p>", with: "").replacingOccurrences(of: "</p>", with: "")
   }
   
   

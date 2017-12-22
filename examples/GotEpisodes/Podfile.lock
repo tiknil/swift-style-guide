@@ -1,36 +1,37 @@
 PODS:
   - Alamofire (4.5.0)
+  - AlamofireImage (3.3.0):
+    - Alamofire (~> 4.5)
   - Nimble (7.0.1)
-  - ObjectMapper (2.2.8)
   - Quick (1.1.0)
-  - ReactiveCocoa (6.0.0-rc.2):
-    - ReactiveSwift (= 2.0.0-rc.2)
-  - ReactiveSwift (2.0.0-rc.2):
+  - ReactiveCocoa (7.0.1):
+    - ReactiveSwift (~> 3.0)
+  - ReactiveSwift (3.0.0):
     - Result (~> 3.2)
-  - Result (3.2.3)
+  - Result (3.2.4)
   - Swinject (2.1.0)
-  - Timepiece (1.2.0)
+  - Timepiece (1.3.1)
 
 DEPENDENCIES:
-  - Alamofire (~> 4.4)
+  - Alamofire (~> 4.5)
+  - AlamofireImage (~> 3.3)
   - Nimble
-  - ObjectMapper (~> 2.2)
   - Quick
-  - ReactiveCocoa (= 6.0.0-rc.2)
+  - ReactiveCocoa (~> 7.0)
   - Swinject (~> 2.1.0)
-  - Timepiece (~> 1.2)
+  - Timepiece (~> 1.3)
 
 SPEC CHECKSUMS:
   Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
+  AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
-  ObjectMapper: 3d571bb5af471c779e1160828cd9ad5c4ef90958
   Quick: dafc587e21eed9f4cab3249b9f9015b0b7a7f71d
-  ReactiveCocoa: ed8daaac86500d55f5f65dafc0fbe5692f251a7a
-  ReactiveSwift: b8ea244bd66fd841151a9146d4e2601a9acbaddf
-  Result: 128640a6347e8d2ae48b142556739a2d13f90ce6
+  ReactiveCocoa: a1b5d502d0d1534f9a72981a485b297b17127f83
+  ReactiveSwift: d9fe0db33c1aaabecb092e8de83cf52875c0de6f
+  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   Swinject: 85e468ac75c5c2d234076f98c591d57d56bc64bc
-  Timepiece: d07900e985af4911f09146f1175fdbec37944836
+  Timepiece: c0760ec0e545697d86b80424dcd2b4d5ef66cf51
 
-PODFILE CHECKSUM: 23b0a330f19c0cdfbef3e39bdbbcde55c32d0f0a
+PODFILE CHECKSUM: a2d78fc3c82eb8334e9fca4990e2c95ad8942c37
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.3.1

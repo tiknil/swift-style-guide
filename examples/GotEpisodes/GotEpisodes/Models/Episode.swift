@@ -7,61 +7,41 @@
 //
 
 import Foundation
-import ObjectMapper
 import Timepiece
 
-public class Episode : Mappable, CustomStringConvertible {
-  var id: Int?
-  
-  var title: String?
-  var season: Int?
-  var number: Int?
-  var airDate: Date?
-  var summary: String?
-  var imageUrl: String?
-  
-  // MARK: Mappable
-  public required init?(map: Map) {
+public class Episode : Codable {
+  struct Image: Codable {
+    let mediumUrl: URL?
+    let originalUrl: URL?
     
+    enum CodingKeys : String, CodingKey {
+      case mediumUrl = "medium"
+      case originalUrl = "original"
+    }
   }
   
-  init() {
-    
-  }
+  // MARK: - Properties
+  var id: Int
+  var title: String
+  var season: Int
+  var number: Int
+  var airDate: Date
+  var summary: String
+  var image: Image
   
-  public func mapping(map: Map) {
-    id                <- map["id"]
-    title             <- map["name"]
-    season            <- map["season"]
-    number            <- map["number"]
-    airDate           <- (map["airdate"], ApiDateTransformer())
-    summary           <- map["summary"]
-    imageUrl          <- map["image.medium"]
-  }
-  
-  public var description: String {
-    return title ?? ""
+  enum CodingKeys : String, CodingKey {
+    case id
+    case title = "name"
+    case season
+    case number
+    case airDate = "airstamp"
+    case summary
+    case image
   }
 }
 
-public class ApiDateTransformer : TransformType {
-  public typealias Object = Date
-  public typealias JSON = String
-  public let dateFormat = "yyyy-MM-dd"
-  
-  public func transformFromJSON(_ value: Any?) -> Date? {
-    if let dateString = value as? String {
-      return dateString.date(inFormat: dateFormat)
-    }
-    return nil
-  }
-  
-  public func transformToJSON(_ value: Date?) -> String? {
-    guard let date = value else {
-      return nil
-    }
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = dateFormat
-    return dateFormatter.string(from: date)
+extension Episode: CustomStringConvertible {
+  public var description: String {
+    return title
   }
 }

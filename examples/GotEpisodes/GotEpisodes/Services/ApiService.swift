@@ -8,7 +8,6 @@
 
 import Alamofire
 import ReactiveSwift
-import ObjectMapper
 
 enum ApiEnvironment {
   case development
@@ -82,11 +81,19 @@ extension ApiService : ApiServiceProtocol {
         debugPrint(response)
         
         switch response.result {
-        case .success(let jsonEpisodes):
-          if let episodes = Mapper<Episode>().mapArray(JSONObject: jsonEpisodes) {
+        case .success:
+          let decoder = JSONDecoder()
+          decoder.dateDecodingStrategy = .iso8601
+          do {
+            guard let jsonEpisodesData = response.data else {
+              observer.send(error: NetworkError.incorrectDataReturned)
+              return
+            }
+            let episodes = try decoder.decode([Episode].self, from: jsonEpisodesData)
             observer.send(value: episodes)
             observer.sendCompleted()
-          } else {
+          } catch {
+            print(error)
             observer.send(error: NetworkError.incorrectDataReturned)
           }
         case .failure(let error):

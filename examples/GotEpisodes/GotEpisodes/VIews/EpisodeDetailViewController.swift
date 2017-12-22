@@ -9,6 +9,7 @@
 import UIKit
 import ReactiveSwift
 import ReactiveCocoa
+import AlamofireImage
 
 class EpisodeDetailViewController: TkMvvmViewController<EpisodeDetailViewModel> {
 
@@ -35,6 +36,14 @@ class EpisodeDetailViewController: TkMvvmViewController<EpisodeDetailViewModel> 
   
   // MARK: Lifecycle
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    if let vm = viewModel {
+      title = "S\(vm.seasonText.value)E\(vm.numberText.value)"
+    }
+  }
+  
   override func setupBindings() {
     super.setupBindings()
     
@@ -42,6 +51,10 @@ class EpisodeDetailViewController: TkMvvmViewController<EpisodeDetailViewModel> 
     if let vm = viewModel,
       let _ = titleLbl {
       // Binding sul viewmodel
+      vm.imageUrl.producer.observe(on: UIScheduler()).startWithValues { imageUrl in
+        guard let url = imageUrl else { return }
+        self.imageView.af_setImage(withURL: url)
+      }
       titleLbl.reactive.text <~ vm.titleText
       seasonLbl.reactive.text <~ vm.seasonText
       episodeLbl.reactive.text <~ vm.numberText

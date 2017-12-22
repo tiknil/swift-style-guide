@@ -21,6 +21,7 @@ class EpisodeCellViewModel {
   // MARK: Public
   
   let episode: Episode
+  let imageUrl: MutableProperty<URL?> = MutableProperty(nil)
   let titleText = MutableProperty("")
   let seasonText = MutableProperty("Season: -")
   let numberText = MutableProperty("Episode: -")
@@ -39,13 +40,11 @@ class EpisodeCellViewModel {
   init(episode: Episode) {
     self.episode = episode
     // Assegnazione alle property dei valori recuperati dal model Episode
-    titleText.value = episode.title ?? ""
-    let seasonString = (episode.season != nil) ? String(describing: episode.season!) : "-"
-    seasonText.value = "Season: \(seasonString)"
-    let numberString = (episode.number != nil) ? String(describing: episode.number!) : "-"
-    numberText.value = "Episode: \(numberString)"
-    let airDateString = (episode.airDate != nil) ? episode.airDate!.dateString(in: .short) : "-"
-    airDateText.value = "Air date: \(airDateString)"
+    imageUrl.value = episode.image.mediumUrl
+    titleText.value = episode.title
+    seasonText.value = "Season: \(String(describing: episode.season))"
+    numberText.value = "Episode: \(String(describing: episode.number))"
+    airDateText.value = "Air date: \(episode.airDate.stringIn(dateStyle: .short, timeStyle: .short))"
   }
   
   

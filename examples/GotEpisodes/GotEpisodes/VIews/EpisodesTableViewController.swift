@@ -35,6 +35,8 @@ class EpisodesTableViewController: TkMvvmTableViewController<EpisodesViewModel> 
     
     // Aggiornamento lista episodi da ViewModel
     viewModel?.updateEpisodes()
+    
+    title = "GoT episodes"
   }
   
   override func setupBindings() {

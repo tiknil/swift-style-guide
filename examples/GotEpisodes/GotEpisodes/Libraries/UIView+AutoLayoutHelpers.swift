@@ -38,13 +38,13 @@ extension UIView {
     }
     translatesAutoresizingMaskIntoConstraints = false
     let heightConstraint = heightAnchor.constraint(equalTo: parent.heightAnchor, multiplier: 1)
-    heightConstraint.priority = 750
+    heightConstraint.priority = UILayoutPriority(rawValue: 750)
     let heightConstraint2 = heightAnchor.constraint(lessThanOrEqualTo: parent.heightAnchor, multiplier: 1)
-    heightConstraint2.priority = 1000
+    heightConstraint2.priority = UILayoutPriority(rawValue: 1000)
     let widthConstraint = widthAnchor.constraint(equalTo: parent.widthAnchor, multiplier: 1)
-    widthConstraint.priority = 750
+    widthConstraint.priority = UILayoutPriority(rawValue: 750)
     let widthConstraint2 = widthAnchor.constraint(lessThanOrEqualTo: parent.widthAnchor, multiplier: 1)
-    widthConstraint2.priority = 1000
+    widthConstraint2.priority = UILayoutPriority(rawValue: 1000)
     let constraints = [
       heightConstraint,
       heightConstraint2,

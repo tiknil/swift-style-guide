@@ -9,6 +9,7 @@
 import UIKit
 import ReactiveSwift
 import ReactiveCocoa
+import AlamofireImage
 
 class EpisodeTableViewCell: UITableViewCell {
 
@@ -28,6 +29,10 @@ class EpisodeTableViewCell: UITableViewCell {
     didSet {
       // Impostazione dei bind all'assegnazione del viewmodel
       if let vm = viewModel {
+        vm.imageUrl.producer.observe(on: UIScheduler()).startWithValues { imageUrl in
+          guard let url = imageUrl else { return }
+          self.artwork.af_setImage(withURL: url)
+        }
         title.reactive.text <~ vm.titleText
         season.reactive.text <~ vm.seasonText
         number.reactive.text <~ vm.numberText

@@ -9,7 +9,6 @@
 import Quick
 import Nimble
 import Timepiece
-import ObjectMapper
 @testable import GotEpisodes
 
 class EpisodeSpec: QuickSpec {
