@@ -64,7 +64,7 @@ var variable = 3
 👎
 ```Swift
 class myAwesomeClass { ... }
-struct my_awesom_struct { ... }
+struct my_awesome_struct { ... }
 let _constant = "http://www.tiknil.com"
 var Variable = 3
 ```
@@ -89,7 +89,7 @@ let view = UIView(frame: CGRect.zero)
 ```
 
 ## Organizzazione del codice
-Nelle classi utilizzare lo [snippet di codice] per la generazione dei `MARK` in modo da separare uniformemente il codice in tutte le classi secondo la seguente struttura:
+Nelle classi utilizzare lo [snippet di codice](https://github.com/tiknil/xcode-snippets) per la generazione dei `MARK` in modo da separare uniformemente il codice in tutte le classi secondo la seguente struttura:
 
 ```Swift
   // MARK: - Properties
@@ -107,9 +107,6 @@ Nelle classi utilizzare lo [snippet di codice] per la generazione dei `MARK` in 
   
   
   // MARK: Lifecycle
-  
-  
-  // MARK: Custom accessors
   
   
   // MARK: Public
