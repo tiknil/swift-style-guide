@@ -5,7 +5,7 @@ L'obiettivo di questa applicazione è dimostrare l'utilizzo delle [best practice
 
 * [Dependency Injection](#dependency-injection)
 * [Inversion of Control Container](#inversion-of-control-container)
-* [MVVM](#mvvm--libreria-tkmvvm)
+* [MVVM - Libreria TkMvvm](#mvvm---libreria-tkmvvm)
 * [Binding](#binding)
 * [Services](#services)
 * [Routing](#routing)
