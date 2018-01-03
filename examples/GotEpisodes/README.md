@@ -326,7 +326,33 @@ button.reactive.pressed = CocoaAction(viewmodel.tapAction)
 ```
 
 ### Custom binding
-coming soon
+
+In uno dei seguenti casi:
+
+* View custom, quindi senza il `BindingTarget` necessario già predisposto da _ReactiveSwift_ nella proprietà _reactive_;
+* L'esito del cambio della proprietà del _ViewModel_ è particolarmente complesso o comporta modifiche a più elementi grafici
+
+è possibile creare un **custom binding** utilizzando i metodi reactive di _ReactiveSwift_.<br>
+Da una `MutableProperty` si può, infatti, recuperare sia il `Signal` che il `SignalProducer` a seconda della [necessità](#reactive).
+
+```Swift
+// Utilizzando il producer ricevo anche lo stato iniziale della value
+viewmodel.propertyToBind.producer
+  .observe(on: UIScheduler()) // Eseguo l'handling nel main thread
+  .startWithValues { value in
+  // Aggiornamenti UI da eseguire al cambio di viewmodel.propertyToBind.value
+}
+
+// Utilizzando il signal ricevo solo aggiornamenti alla value d'ora in poi
+viewmodel.propertyToBind.signal
+  .observe(on: UIScheduler())
+  .observeValues { value in
+  // Aggiornamenti UI da eseguire al cambio di viewmodel.propertyToBind.value
+}
+```
+
+Per informazioni più approfondite consultare la [documentazione di ReactiveSwift](http://reactivecocoa.io/reactiveswift/docs/latest/).
+
 
 ## Services
 coming soon
