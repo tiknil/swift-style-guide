@@ -242,6 +242,90 @@ Nel caso quest'ultima sia figlia delle classi `TkMvvmViewController` o `TkMvvmTa
 3. Istanziare le `Action` del _ViewModel_ nel metodo `viewDidLoad()` del `TkMvvmViewModel`.
 
 ## Binding
+
+Con **binding** si intende il collegamento di una risorsa grafica con il dato o l'azione relativa presente nel _ViewModel_.
+
+Può essere _unidirezionale_:
+
+* _Dato => UI:_ ogni modifica del dato viene automaticamente visualizzata nel UI relativa. Es: `String => UILabel`
+* _UI => Dato_: ogni modifica/azione al componente UI viene automaticamente propagato nel dato relativo. Es: `UIButton tap => ViewModel action`
+
+o _bidirezionale_:
+
+* _UI <=> Dato_: ogni cambiamento viene propagato all'altro elemento. **Attenzione: è facile che si creino dei cicli infiniti se non si prendono le dovute precauzioni (vedi codice sotto). Es: `UITextView <=> String`
+
+Il **binding** permette di creare delle _View_ completamente ignoranti della business logic che sta dietro a ciò che va visualizzato, con il semplice obiettivo di visualizzare ciò che viene rappresentato in maniera astratta dal _ViewModel_.<br>
+In questo modo è possibile sostituire completamente l'aspetto grafico di una schermata mantenendo la business logic implementata nel _ViewModel_.
+
+Per realizzare i binding utilizziamo [ReactiveSwift](http://reactivecocoa.io/reactiveswift/docs/latest/) e [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa/#readme).
+
+### Property binding
+
+Grazie a **ReactiveSwift** possiamo creare un binding tra ogni componente grafico `UIKit` e una proprietà di tipo `MutableProperty` definita nel _ViewModel_, tramite l'operatore `<~`.
+
+Una **MutableProperty** è un contenitore osservabile di un dato di un determinato tipo (definito in fase di dichiarazione); l'ultimo stato di tale dato è sempre visualizzabile/modificabile tramite la proprietà `value`.<br>
+Ad ogni modifica di `value` viene generato un'evento osservabile sulla `MutableProperty` in modo che chiunque stia osservando tale property riceva l'aggiornamento. In questo modo la UI può rimanere sempre aggiornata sullo stato del dato.
+
+**Nota:** i binding vanno sempre eseguiti sui `BindingTarget` forniti da _ReactiveSwift_ nella proprietà `reactive` di ogni elemento `UIKit`.
+
+#### ViewModel - Dichiarazione proprietà
+
+```Swift
+// Dichiarazione di una MutableProperty di tipo esplicito
+let nameText: MutableProperty<String> = MutableProperty("Mario Rossi")
+
+// Dichiarazione di una MutableProperty con inferenza del tipo (Bool)
+let nameIsHidden = MutableProperty(true)
+```
+
+#### View - Creazione binding
+
+##### Unidirezionale: Dato => UI
+```Swift
+// Testo di label visualizza il contenuto di viewmodel.nameText.value
+nameLabel.reactive.text <~ viewmodel.nameText
+    
+// Se viewmodel.nameIsHidden.value = true nameLabel viene nascosto
+nameLabel.reactive.isHidden <~ viewmodel.nameIsHidden
+```
+
+##### Unidirezionale: UI => Dato
+```Swift
+// Testo nel viewmodel viene aggiornato in base al testo inserito dall'utente nel textfield
+viewmodel.nameText <~ nameTextField.reactive.continuousTextValues.map { $0! }
+```
+
+##### Bidirezionale: UI <=> Dato
+```Swift
+// Testo del textfield visualizza il contenuto di viewmodel.nameText.value
+nameTextField.reactive.text <~ viewmodel.nameText
+// Testo nel viewmodel viene aggiornato in base al testo inserito dall'utente nel textfield
+viewmodel.nameText <~ nameTextField.reactive.continuousTextValues.map { $0! }
+```
+Nel caso del paragrafo precedente se si modifica `viewmodel.nameText.value` il testo nel textfield non subirebbe cambiamenti, mentre con il binding bidirezionale il viewmodel può sia visualizzare le modifiche sia inviarne.<br>
+**Nota:** utilizzando l'operatore `<~` non vengono generati loop infiniti. Nel caso non sia possibile utilizzare l'operatore e si debba creare un binding custom allora è necessario verificare che non si crei un loop infinito (ad esempio utilizzando `skipRepeats()` sull'observe.
+
+### Action binding
+
+Utilizzando **ReactiveCocoa** possiamo creare nel _ViewModel_ delle `Action` e bindarle all'evento UI che deve scatenarle.
+
+#### ViewModel - Dichiarazione action
+
+```Swift
+var tapAction = Action<Void, Void, NSError> { (_) -> SignalProducer<Void, NSError> in
+  // Inserire qui il codice dell'azione da eseguire sul tap
+  return SignalProducer.empty
+}
+```
+
+#### View - Action binding
+
+```Swift
+// Quando il pulsante viene premuto viene eseugita l'azione tapAction del viewmodel
+button.reactive.pressed = CocoaAction(viewmodel.tapAction)
+```
+
+### Custom binding
 coming soon
 
 ## Services
