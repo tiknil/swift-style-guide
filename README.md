@@ -26,6 +26,7 @@ In generale **Tiknil adotta tutte le linee guida di RayWenderlich** e in questo 
 * [Struttura del progetto](#struttura-del-progetto)
   * [Repository e CocoaPods](#repository-e-cocoapods)
   * [Cartelle di progetto](#cartelle-di-progetto)
+* [Reactive programming](#reactive-programming)
 * [Esempio pratico](#esempio-pratico)
 
 ## Naming
@@ -272,6 +273,8 @@ References:
 
 * [Semplice video che chiarisce il concetto di DI](https://www.youtube.com/watch?v=IKD2-MAkXyQ)
 
+Nella documentazione dell'[esempio pratico](#esempio-pratico) possiamo vedere come Tiknil implementa MVVM nei propri progetti.
+
 ## Struttura del progetto
 Nelle seguenti sezioni definiamo le best practices di Tiknil per l'impostazione di un progetto iOS in Swift chiamato **AwesomeApp**.
 
@@ -314,7 +317,42 @@ La cartella contenente il codice sorgente dell'app avrà la seguente struttura:
 
 Le cartelle al primo livello le creiamo fisicamente nel file system e le importiamo in modo che creino il gruppo logico nel progetto Xcode, mentre quelle al secondo livello possiamo anche lasciarle solo come gruppi logici.
 
-### Esempio pratico
+## Reactive programming
+
+Tiknil fa largo uso dei concetti di _reactive programming_ nei propri progetti sia per la manipolazione dei dati, sia per la visualizzazione di quest'ultimi nella UI.<br>
+Nel caso di iOS e Swift utilizziamo la libreria [ReactiveSwift](http://reactivecocoa.io/reactiveswift/docs/latest/), quindi faremo riferimento ad essa per esemplificare i concetti spiegati di seguito.
+
+Il **reactive programming** è uno stile di programmazione orientato alla manipolazione di **stream di dati.**
+
+Con _stream di dati_ si intende generalmente un flusso di uno o più dati ordinati in una sequenza temporale, come ad esempio:
+
+* Click su un elemento dell'interfaccia grafica; in questo caso si tratta di stream di uno **stesso dato** nel tempo.
+* Caratteri inseriti in input dall'utente; in questo caso si tratta di stream di **dati dello stesso tipo** (stringa) nel tempo.
+* Chiamata di un'api con esito positivo o negativo; in questo caso si tratta di stream di **dati di tipo diverso** a seconda dell'esito (es: _positivo => json_, _negativo => errore_).
+* Modifiche ad una proprietà di un oggetto; in questo caso si tratta di uno stream che rappresenta lo **storico dei valori** assunti dalla proprietà.
+
+Come possiamo intuire da questi esempi è possibile creare stream di dati di qualsiasi tipo come _variabili, input utente, proprietà, cache, strutture dati_, etc.
+
+Il concetto di base del _Reactive programming_ è infatti l'**osservazione** di uno stream per _reagire_ di conseguenza. Nella pratica, con _osservazione_, si intende l'esecuzione di una funzione ogni volta che compare un dato sullo stream (generalmente chiamato **Evento**).
+
+**ReactiveSwift** implementa i vari concetti reactive con le seguenti classi:
+
+* `Event`: unità di base trasportata da uno _stream_; si tratta quindi del dato vero e proprio.<br>
+_Esempio: in una trasmissione video l'event rappresenta un frame del video._
+* `Signal`: flusso (_stream_) unidirezionale di eventi; il signal può essere _osservato_ da altri oggetti senza che esso venga influenzato.<br>
+_Esempio: in una trasmissione video il signal rappresenta un canale tv: esso infatti è un flusso di event (frame) osservabile senza la possibilità che l'osservatore influenzi il segnale._
+* `SignalProducer`: permette di creare un signal (stream di eventi) quando necessario.<br>
+_Esempio: in una trasmissione video il signal producer rappresenta un programma tv on demand (es: Netflix) che l'utente può avviare quando vuole generando appunto uno stream di event (frame)_
+* `Property`: oggetto osservabile contenente una variabile; è possibile ispezionare il valore attuale della variabile e/o _osservare_ il signal di modifiche alla variabile.<br>
+_Esempio: in una trasmissione video la property potrebbe rappresentare il tempo di riproduzione di registrazione; è sempre presente un tempo di offest dall'inizio del video e può essere osservato per aggiornare la grafica del player video._
+* `MutableProperty`: come _property_ con la differenza che è anche possibile modificare il valore della variabile.<br>
+_Esempio: rispetto all'esempio precedente si aggiunge la possibilità di modificare il valore, quindi di selezionare l'offset dall'inizio del video._
+
+Per maggiori informazioni consultare la [documentazione](http://reactivecocoa.io/reactiveswift/docs/latest/reactiveprimitives.html) delle classi principali di _ReactiveSwift_.
+
+Ogni framework reactive mette sempre a disposizione utili funzioni per **creare, combinare, filtrare e trasformare** gli stream agevolandone così la manipolazione. _ReactiveSwift_ chiama tali funzioni **operatori** e sono documentate [qui](http://reactivecocoa.io/reactiveswift/docs/latest/basicoperators.html).
+
+## Esempio pratico
 Al seguente link è disponibile il codice di un'applicazione di esempio che integra tutte le **best practice** definite in questo documento:
 
 [GotEpisodes](https://github.com/tiknil/swift-style-guide/tree/master/examples/GotEpisodes)

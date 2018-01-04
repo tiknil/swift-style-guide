@@ -11,7 +11,6 @@ L'obiettivo di questa applicazione è dimostrare l'utilizzo delle [best practice
 * [Routing](#routing)
 * [JSON Mapping](#json-mapping)
 * [Testing](#testing)
-* [Improvements](#improvements)
 
 ## Dependency Injection
 Esistono 3 tipi di **Dependency Injection**:
@@ -28,6 +27,7 @@ init(dependency: Dependency) {
   // Dipendenza iniettata
 }
 ```
+
 * **Setter** injection: le dipendenze vengono fornite tramite un metodo *setter*
 
 ```Swift
@@ -40,6 +40,7 @@ public var dependency: Dependency? {
   }
 }
 ```
+
 * **Interface** injection: la dipendenza offre un'interfaccia con un *setter* obbligatorio e ogni client implementa tale interfaccia per accettare la dipendenza
 
 ```Swift
@@ -63,6 +64,7 @@ Quando possibile prediligiamo la **Construction injection**, altrimenti utilizzi
 È **SEMPRE** consigliato creare **dipendenze da interfacce** piuttosto che **dipendenze da classi** perché in fase di [testing](#testing) è possibile sostituire la dipendenza con uno *Stub/Mock*.
 
 👍
+
 ```Swift
 // Interfaccia della dipendenza
 protocol DependencyProtocol {
@@ -94,6 +96,7 @@ class StubDependency: DependencyProtocol {
 ```
 
 👎
+
 ```Swift
 // Classe della dipendenza
 class Dependency {
@@ -333,7 +336,7 @@ In uno dei seguenti casi:
 * L'esito del cambio della proprietà del _ViewModel_ è particolarmente complesso o comporta modifiche a più elementi grafici
 
 è possibile creare un **custom binding** utilizzando i metodi reactive di _ReactiveSwift_.<br>
-Da una `MutableProperty` si può, infatti, recuperare sia il `Signal` che il `SignalProducer` a seconda della [necessità](#reactive).
+Da una `MutableProperty` si può, infatti, recuperare sia il `Signal` che il `SignalProducer` a seconda della [necessità](https://github.com/tiknil/swift-style-guide#reactive-programming).
 
 ```Swift
 // Utilizzando il producer ricevo anche lo stato iniziale della value
@@ -355,7 +358,18 @@ Per informazioni più approfondite consultare la [documentazione di ReactiveSwif
 
 
 ## Services
-coming soon
+
+Chiamiamo **Service** una classe dedicata all'esecuzione di _business logic_ legata a una stesso ambito iniettabile come dipendenza ove necessario, tramite corrispettivo **ServiceProtocol**.
+
+Esempi dei più utilizzati:
+
+* **ApiService:** dedicato alle chiamate network alle API del server.
+* **CacheService:** dedicato alla storicizzazione di dati (database, portachiavi, file).
+* **DataService:** dedicato all'utilizzo di dati temporanei disponibili solo in fase di esecuzione.
+* **LocationService:** dedicato alla gestione del geoposizionamento dell'utente.
+* **BluetoothService:** dedicato alla gestione della comunicazione bluetooth.
+* **WebSocketService:** dedicato alla comunicazione via WebSocket.
+* _ecc..._
 
 ## Routing
 coming soon
@@ -366,7 +380,7 @@ coming soon
 ## Testing
 coming soon
 
-## Improvements
+# Improvements
 
 Nella seguente lista riportiamo una serie di improvement che in futuro vorremmo applicare alle best practice descritte in questo documento:
 
