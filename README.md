@@ -26,7 +26,7 @@ In generale **Tiknil adotta tutte le linee guida di RayWenderlich** e in questo 
 * [Struttura del progetto](#struttura-del-progetto)
   * [Repository e CocoaPods](#repository-e-cocoapods)
   * [Cartelle di progetto](#cartelle-di-progetto)
-* [Reactive programming](#reactive-programming)
+* [ReactiveX](#reactivex)
 * [Esempio pratico](#esempio-pratico)
 
 ## Naming
@@ -176,8 +176,6 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 ```
 
 ## Indentazione
-* Indentare usando 2 spazi. Impostare Xcode nel modo seguente da `Preferences > Text Editing > Indentation`:
-![Indentazione](https://github.com/tiknil/swift-style-guide/blob/master/images/indentation.png)
 * Le parentesi graffe `{` `}` vanno sempre aperte sulla stessa riga e chiuse su un'altra riga.
 > **CONSIGLIO:** Si può indentare automaticamente premendo `⌘+A` (seleziona tutto) e `Control+i` (indentazione automatica)
 
@@ -317,14 +315,14 @@ La cartella contenente il codice sorgente dell'app avrà la seguente struttura:
 
 Le cartelle al primo livello le creiamo fisicamente nel file system e le importiamo in modo che creino il gruppo logico nel progetto Xcode, mentre quelle al secondo livello possiamo anche lasciarle solo come gruppi logici.
 
-## Reactive programming
+## ReactiveX
 
-Tiknil fa largo uso dei concetti di _reactive programming_ nei propri progetti sia per la manipolazione dei dati, sia per la visualizzazione di quest'ultimi nella UI.<br>
-Nel caso di iOS e Swift utilizziamo la libreria [ReactiveSwift](http://reactivecocoa.io/reactiveswift/docs/latest/), quindi faremo riferimento ad essa per esemplificare i concetti spiegati di seguito.
+Tiknil utilizza _[ReactiveX](https://github.com/ReactiveX/RxSwift)_ nei propri progetti sia per la manipolazione dei dati, sia per la visualizzazione di quest'ultimi nella UI.
 
-Il **reactive programming** è uno stile di programmazione orientato alla manipolazione di **stream di dati.**
+**ReactiveX** non è altro che una generica definizione di API per la programmazione asincrona che estende l'[Observer pattern](https://it.wikipedia.org/wiki/Observer_pattern) per supportare sequenze di dati/eventi e fornendo operatori per manipolarle; tale definizione viene implementata in molti linguaggi diversi permettendoci quindi di utilizzare gli stessi concetti sia su iOS che Android.<br>
+Nel caso di Swift tali API sono implementate nella libreria [RxSwift](https://github.com/ReactiveX/RxSwift), quindi faremo riferimento ad essa per esemplificare i concetti spiegati di seguito.
 
-Con _stream di dati_ si intende generalmente un flusso di uno o più dati ordinati in una sequenza temporale, come ad esempio:
+Con _sequenza/stream di dati_ si intende generalmente un flusso di uno o più dati ordinati in una sequenza temporale, come ad esempio:
 
 * Click su un elemento dell'interfaccia grafica; in questo caso si tratta di stream di uno **stesso dato** nel tempo.
 * Caratteri inseriti in input dall'utente; in questo caso si tratta di stream di **dati dello stesso tipo** (stringa) nel tempo.
@@ -333,24 +331,24 @@ Con _stream di dati_ si intende generalmente un flusso di uno o più dati ordina
 
 Come possiamo intuire da questi esempi è possibile creare stream di dati di qualsiasi tipo come _variabili, input utente, proprietà, cache, strutture dati_, etc.
 
-Il concetto di base del _Reactive programming_ è infatti l'**osservazione** di uno stream per _reagire_ di conseguenza. Nella pratica, con _osservazione_, si intende l'esecuzione di una funzione ogni volta che compare un dato sullo stream (generalmente chiamato **Evento**).
+L'operazione fondamentale fornita da _ReactiveX_ è infatti l'**osservazione** di uno stream per _reagire_ di conseguenza. Nella pratica, con _osservazione_, si intende l'esecuzione di una funzione ogni volta che compare un dato sullo stream (generalmente chiamato **Evento**).
 
-**ReactiveSwift** implementa i vari concetti reactive con le seguenti classi:
+**RxSwift** implementa i vari concetti reactive con le seguenti classi:
 
 * `Event`: unità di base trasportata da uno _stream_; si tratta quindi del dato vero e proprio.<br>
 _Esempio: in una trasmissione video l'event rappresenta un frame del video._
-* `Signal`: flusso (_stream_) unidirezionale di eventi; il signal può essere _osservato_ da altri oggetti senza che esso venga influenzato.<br>
-_Esempio: in una trasmissione video il signal rappresenta un canale tv: esso infatti è un flusso di event (frame) osservabile senza la possibilità che l'osservatore influenzi il segnale._
-* `SignalProducer`: permette di creare un signal (stream di eventi) quando necessario.<br>
-_Esempio: in una trasmissione video il signal producer rappresenta un programma tv on demand (es: Netflix) che l'utente può avviare quando vuole generando appunto uno stream di event (frame)_
-* `Property`: oggetto osservabile contenente una variabile; è possibile ispezionare il valore attuale della variabile e/o _osservare_ il signal di modifiche alla variabile.<br>
-_Esempio: in una trasmissione video la property potrebbe rappresentare il tempo di riproduzione di registrazione; è sempre presente un tempo di offest dall'inizio del video e può essere osservato per aggiornare la grafica del player video._
-* `MutableProperty`: come _property_ con la differenza che è anche possibile modificare il valore della variabile.<br>
-_Esempio: rispetto all'esempio precedente si aggiunge la possibilità di modificare il valore, quindi di selezionare l'offset dall'inizio del video._
+* `Observable`: flusso (_stream_) unidirezionale di eventi; come si può intuire dal nome, l'_observable_ può essere _osservato_ da altri oggetti.<br>
+Un _observable_ può essere [**hot** o **cold**](https://github.com/ReactiveX/RxSwift/blob/master/Documentation/HotAndColdObservables.md):
+	* **Hot observable:** può iniziare ad emettere eventi appena creato e chiunque inizi ad osservarlo in un secondo momento riceverà eventi solo dal momento dell'osservazione in poi.<br>
+_Esempio: in una trasmissione video l'hot observable rappresenta un canale tv: esso infatti è un flusso di event (frame) continuo e gli osservatori vedono il programma da quando si sintonizzano in poi, anche se esso è già iniziato in precedenza._
+	* **Cold observable:** aspetta ad emettere eventi fino a quando qualcuno inizia ad osservarlo, garantendo all'osservatore di ricevere l'intera sequenza.<br>
+_Esempio: in una trasmissione video il cold observable rappresenta un programma tv on demand (es: Netflix) che l'utente può avviare quando vuole generando appunto uno stream di event (frame)_
+* `Observer` (o `Subscriber`): oggetto che si _sottoscrive_ ad un observable ricevendo così gli eventi emessi da esso.<br>
+_Esempio: nel caso delle trasmissioni tv l'observer è il telespettatore (o più precisamente il televisore)._
 
-Per maggiori informazioni consultare la [documentazione](http://reactivecocoa.io/reactiveswift/docs/latest/reactiveprimitives.html) delle classi principali di _ReactiveSwift_.
+Ogni framework reactive mette sempre a disposizione utili funzioni per **creare, combinare, filtrare e trasformare** gli stream agevolandone così la manipolazione. _ReactiveX_ chiama tali funzioni **operatori** e sono documentate [qui](http://reactivex.io/documentation/operators.html).
 
-Ogni framework reactive mette sempre a disposizione utili funzioni per **creare, combinare, filtrare e trasformare** gli stream agevolandone così la manipolazione. _ReactiveSwift_ chiama tali funzioni **operatori** e sono documentate [qui](http://reactivecocoa.io/reactiveswift/docs/latest/basicoperators.html).
+Per maggiori informazioni consultare la documentazione di [_RxSwift_](https://github.com/ReactiveX/RxSwift/blob/master/Documentation/GettingStarted.md) e [ReactiveX](http://reactivex.io/intro.html).
 
 ## Esempio pratico
 Al seguente link è disponibile il codice di un'applicazione di esempio che integra tutte le **best practice** definite in questo documento:
