@@ -23,6 +23,7 @@ In generale **Tiknil adotta tutte le linee guida di RayWenderlich** e in questo 
   * [MVC](#mvc)
   * [MVVM](#mvvm)
   * [Inversion of Control e Dependency Injection](#inversion-of-control-e-dependency-injection)
+  * [Flow coordinator](#flow-coordinator)
 * [Struttura del progetto](#struttura-del-progetto)
   * [Repository e CocoaPods](#repository-e-cocoapods)
   * [Cartelle di progetto](#cartelle-di-progetto)
@@ -271,7 +272,25 @@ References:
 
 * [Semplice video che chiarisce il concetto di DI](https://www.youtube.com/watch?v=IKD2-MAkXyQ)
 
-Nella documentazione dell'[esempio pratico](#esempio-pratico) possiamo vedere come Tiknil implementa MVVM nei propri progetti.
+### Flow coordinator
+Il *flow coordinator* pattern si occupa della gestione della navigazione dell'applicazione e della creazione/distruzione delle varie schermate quando necessario.
+
+I vantaggi dell'utilizzo di questo pattern sono:
+
+* **Decoupling fra schermate:** ogni schermata (View + ViewModel) non ha riferimenti ad altre schermate, ma espone solo un'interfaccia con eventi di navigazione che saranno interpretati dal coordinator.
+* **Facilità di cambio navigazione:** in caso sia necessario cambiare il sistema di navigazione basta apportare modifiche al coordinator senza toccare minimamente le schermate.
+* **Riusabilità del codice:** dato che View e ViewModel non si occupano di navigazione è più facile riutilizzarli anche se l'ambito di navigazione è differente.
+* **Più facile da testare:** l'assenza di navigazione in View e ViewModel semplifica la creazione di test automatici.
+
+Fondamentamentalmente un *Coordinator* non è altro che un semplice oggetto che è responsabile di configurare View e ViewModel e gestirne la presentazione in un determinato flusso di navigazione.
+
+È opportuno che sia presente un coordinator principale, generalmente chiamato *AppCoordinator*, che si occupa dell'avvio della navigazione tramite l'avvio di vari coordinator secondari che si occupano di singoli flussi di navigazione atomicizzabili per contesto.
+
+Esempio:
+
+![Flow Coordinator pattern schema](https://github.com/tiknil/swift-style-guide/blob/master/images/flow_coordinator_pattern_schema.png)
+
+Nella documentazione dell'[esempio pratico](#esempio-pratico) possiamo vedere come Tiknil implementa MVVM + Coordinator nei propri progetti.
 
 ## Struttura del progetto
 Nelle seguenti sezioni definiamo le best practices di Tiknil per l'impostazione di un progetto iOS in Swift chiamato **AwesomeApp**.
