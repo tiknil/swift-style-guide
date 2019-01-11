@@ -263,7 +263,7 @@ protocol ViewModelProtocol {
   var buttonTap: AnyObserver<Void> { get }
   
   // Bidirectional
-  vat textFieldText: BehaviorRelay<String?> { get }
+  var textFieldText: BehaviorRelay<String?> { get }
 }
 ```
 
@@ -281,7 +281,7 @@ Tale _PublishSubject_ può essere quindi osservato dal _ViewModel_ per effettuar
 Esempio:
 
 ```swift
-procotol CacheServiceProtocol {
+protocol CacheServiceProtocol {
   // Un BehaviorRelay è un wrapper di un BehaviorSubject con le stesse caratteristiche di un Driver,
   // ovvero sempre su main thread e senza possibilità di fallire
   var numberOfTaps: BehaviorRelay<Int> { get }
@@ -313,7 +313,7 @@ final class ViewModel: ViewModelProtocol {
     
     // Osservo il PublishSubject per eseguire l'handling ad ogni ricezione di un evento di tap dalla view
     buttonTapPs.bind {
-    		cacheService.numberOfTaps.value = cacheService.numberOfTaps.value + 1
+    	  cacheService.numberOfTaps.value = cacheService.numberOfTaps.value + 1
     	}
     	.disposed(by: disposeBag)
   }
@@ -395,7 +395,7 @@ let buttonTap: AnyObserver<Void> = buttonTapPs.asObserver
 
 // Osservo (o bindo) l'handler da eseguire ogni volta che l'utente tappa sul pulsante
 buttonTapPs.bind {
-		// Handler sul tap
+	  // Handler sul tap
 	}
 	.disposed(by: disposeBag)
 ```
