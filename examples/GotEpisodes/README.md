@@ -5,10 +5,12 @@ L'obiettivo di questa applicazione è dimostrare l'utilizzo delle [best practice
 
 * [Dependency Injection](#dependency-injection)
 * [Inversion of Control Container](#inversion-of-control-container)
-* [MVVM - Libreria TkMvvm](#mvvm---libreria-tkmvvm)
+* [MVVM](#mvvm)
+	* [View](#view)
+	* [ViewModel](#viewmodel)
 * [Binding](#binding)
 * [Services](#services)
-* [Routing](#routing)
+* [Coordinator](#coordinator)
 * [JSON Mapping](#json-mapping)
 * [Testing](#testing)
 
@@ -208,41 +210,115 @@ container.register(MySingletonClass.self) { _ in
 Nell'[AppDelegate](https://github.com/tiknil/swift-style-guide/blob/master/examples/GotEpisodes/GotEpisodes/Application/AppDelegate.swift) è possibile vedere degli esempi di setup del **container** tramite **Swinject**.
 
 
-## MVVM - Libreria TkMvvm
-
-La libreria Tiknil [TkMvvm](https://github.com/tiknil/swift-style-guide/blob/master/examples/GotEpisodes/GotEpisodes/Libraries/TkMvvm) predispone protocolli e classi base di **View** e **ViewModel** per la realizzazione del pattern **MVVM** con l'aggiunta di un [Router](#routing) per la gestione della navigazione.
+## MVVM
 
 In iOS il ruolo di _View_ è svolto dalle classi `UIViewController` e `UIView` (e rispettivi figli).<br>
 L'obiettivo di tale ruolo è la realizzazione grafica di una schermata (o componente) **SENZA** nessuna logica di business perché essa sarà implementata nel _ViewModel_ associato.<br>
 Si può pensare alla _View_ come a una semplice _skin_ grafica di ciò che viene rappresentato in maniera astratta dal _ViewModel_; ad esempio, se nel _ViewModel_ è presente una proprietà testo di tipo `String`, nella _View_ associata sarà presente una `UILabel` o una `UITextView` a seconda che il testo debba essere modificabile o meno.<br>
-Anche gli handler delle azioni compiute sulla grafica vanno implementati nel _ViewModel_; ad esempio se nella _View_ è presente un pulsante, nel _ViewModel_ sarà presente un handler (chiamata **Action**) che va associato all'evento di pressione del pulsante.
+Anche la logica conseguente alle azioni compiute sulla grafica va implementate nel _ViewModel_; ad esempio se nella _View_ è presente un pulsante, il _ViewModel_ metterà a disposizione un handler da associare alla pressione del pulsante.
 
-L'associazione tra _proprietà_ e _action_ tra _View_ e _ViewModel_ viene effettuata tramite [Binding](#binding).
+L'associazione tra _View_ e _ViewModel_ viene effettuata tramite [Binding](#binding) tra gli oggetti `UIKit` presenti nella _View_ e gli oggetti _RxSwift_ messi a disposizione dal _ViewModel_.
 
 ### View
 
-Ogni _View_ deve implementare il protocollo `TkMvvmViewProtocol` in modo che:
+Se la _View_ rappresenta una schermata allora sarà figlia di un `UIViewController`, altrimenti può essere semplicemente figlia di una `UIView`.<br>
+Nel primo caso è consigliato creare per ogni progetto un `BaseViewController` che estenda `UIVIewController` da utilizzare come padre di qualsiasi _ViewController_ creeremo in app. Questo perché capita spesso che all'interno di un'applicazione siano presenti metodi comuni a qualsiasi schermata, quindi torna molto utile questa soluzione.
 
-* sia disponibile la proprietà `viewModel` contenente il riferimento al proprio _ViewModel_.
-* venga implementato il metodo `setupBindings()` entro il quale vengono creati tutti i bindings tra _View_ e _ViewModel__
+L'unico requisito di una _View_ è che abbia una dipendenza da un _ViewModel_, ma tramite un protocollo **ViewModelProtocol** per questioni di migliore testabilità.<br>
+Tale dipendenza può essere passata tramite il costruttore o come proprietà a seconda che si utilizzi o meno uno storyboard.
 
-La libreria mette già a disposizione l'implementazione del protocollo per le classi `UIViewController` e `UITableViewController` associando un _ViewModel_ di tipo `TkMvvmViewModel` descritto nel capitolo successivo.<br>
-Queste classi offrono le seguenti utilità:
-
-* Invocazione automatica del metodo `setupBindings()` in seguito all'injection del _ViewModel_ come dipendenza.
-* "Inoltro" automatico dei metodi di _lifecycle_ del _ViewController_ ai corrispettivi metodi definiti nel `TkMvvmViewModel`: `viewDidLoad`, `viewWillAppear`, `viewDidAppear`, `viewWillDisappear` e `viewDidDisappear`; ciò permette al _ViewModel_ di avere padronanza del _lifecycle_ del _ViewController_, pur non avendo riferimenti ad esso.
-* Metodo rapido per istanziare il _ViewController_ da uno storyboard: `instantiateFrom(storyboardWithName:)`.
+Una volta iniettata la dipendenza di tipo _ViewModelProtocol_, l'unico onere della _View_ è effettuare i **binding** con le proprietà esposte da essa, oltre a fare eventuali ulteriori setting grafici.
 
 ### ViewModel
 
-Normalmente l'unico requisito di un _ViewModel_ è che sia un semplice oggetto _Swift_ che abbia proprietà di tipo `MutableProperty` e handler di tipo `Action` della libreria [ReactiveSwift](https://github.com/ReactiveCocoa/ReactiveSwift) in modo che si riescano ad effettuare i binding con la rispettiva _View_.<br>
-Nel caso quest'ultima sia figlia delle classi `TkMvvmViewController` o `TkMvvmTableViewController` allora è necessario che sia figlio della classe `TkMvvmViewModel` con il vantaggio di permettere al _ViewModel_ di avere padronanza del _lifecycle_ del _ViewController_ tramite i metodi: `viewDidLoad`, `viewWillAppear`, `viewDidAppear`, `viewWillDisappear` e `viewDidDisappear`.
+Un _ViewModel_ è composto da un protocollo (_ViewModelProtocol_) e dall'implementazione dello stesso (_ViewModel_).<br>
+Sarà compito dell'_IoC Container_ istanziare il _ViewModel_ ogni volta che è richiesto un _ViewModelProtocol_ come dipendenza.
 
-### Best practice per l'utilizzo di TkMvvm
+#### Protocol
 
-1. Per ogni schermata dell'app creare la _View_ utilizzando una sottoclasse di `TkMvvmViewController` (o `TkMvvmTableViewController`) e il rispettivo _ViewModel_ utilizzando una sottoclasse di `TkMvvmViewModel`.
-2. Inserire tutti i binding tra _View_ <=> _ViewModel_ nel metodo `setupBindings()`.
-3. Istanziare le `Action` del _ViewModel_ nel metodo `viewDidLoad()` del `TkMvvmViewModel`.
+Il protocollo conterrà diverse categorie di proprietà _RxSwift_:
+
+* **Outputs**: tutte le proprietà che hanno il compito di **inviare** un'informazione alla _View_: _ViewModel_ => _View_.<br>
+Es: `String` da mostrare in `UILabel`, `Bool` per gestire visibilità di `UIView`, ecc.
+* **Inputs**: tuttle le proprietà che hanno il compito di **ricevere** un'informazione alla _View_: _View_ => _ViewModel_.<br>
+Es: tap su un pulsante, cambio del valore di uno switch, elemento selezionato da una lista, ecc.
+* **Bidirectional**: tutte le proprietà che **inviano e ricevono** informazioni dalla _View_: _View_ <=> _ViewModel_.<br>
+Es: textfield con testo impostabile da viewmodel.
+
+Gli _outputs_ saranno nella stragrande maggioranza dei **Driver**, un particolare _trait_ di _RxSwift/RxCocoa_ che consiste in un observable che invia eventi sempre sul main thread e che non può fallire.
+
+Gli _inputs_ saranno invece sempre **AnyObserver** perché il flusso dell'informazione è in ricezione dalla _View_.
+
+I _bidirectional_ saranno sempre dei **BehaviorRelay**, un particolare _trait_ di _RxSwift/RxCocoa_ che si comporta sia da _Observable_ che da _Observer_ fungendo da wrapper al concetto _ReactiveX_ di [BehaviorSubject](http://reactivex.io/documentation/subject.html) ma, allo stesso modo del driver, forzando l'osservazione sul main thread e impedendo la propagazione di errori nella sequenza.<br>
+**Nota:** evitare di utilizzare le _Variable_ perché nonostante siano molto simili a _BehaviorRelay_ e in passato venissero usate al loro posto esse sono state deprecate in quando estranee ai concetti standard di _ReactiveX_.
+
+Esempio:
+
+```swift
+protocol ViewModelProtocol {
+  // Outputs
+  var numberOfTapsText: Driver<String> { get }
+  
+  // Inputs
+  var buttonTap: AnyObserver<Void> { get }
+  
+  // Bidirectional
+  vat textFieldText: BehaviorRelay<String?> { get }
+}
+```
+
+#### Implementation
+
+L'oggetto che implementa il protocollo avrà il compito di definire le **logiche** di mutazione degli eventi che transitano tra outputs e inputs, tipicamente recuperando informazioni dai **Model** accessibili tramite **Service** iniettati come dipendenze.
+
+Il _ViewModel_ avrà un **costruttore** che riceve almeno il **Container** da cui risolvere le dipendenze necessarie ed eventualmente altri parametri utili per la visualizzazione della schermata (es: in una schermata di dettaglio utente ci sarà come parametro anche l'id (o direttamente il model) dell'utente da mostrare).
+
+Gli _outputs_ sono **Driver** e possono essere creati ad hoc o mappati da altri _Observable_ (ad esempio dai _Service_) eventualmente utilizzando il metodo `asDriver(onErrorJustReturn:)`.
+
+Gli _inputs_ sono **AnyObserver**, quindi si possono creare definendo localmente **PublishSubject** per poi esporne l'observer tramite il metodo `asObserver()`.<br>
+Tale _PublishSubject_ può essere quindi osservato dal _ViewModel_ per effettuare l'handling delle azioni ricevute dalla _View_.
+
+Esempio:
+
+```swift
+procotol CacheServiceProtocol {
+  // Un BehaviorRelay è un wrapper di un BehaviorSubject con le stesse caratteristiche di un Driver,
+  // ovvero sempre su main thread e senza possibilità di fallire
+  var numberOfTaps: BehaviorRelay<Int> { get }
+}
+
+final class ViewModel: ViewModelProtocol {
+  // Outputs
+  let numberOfTapsText: Driver<String>
+  
+  // Inputs
+  let buttonTap: AnyObserver<Void>
+  
+  private let disposeBag = DisposeBag()
+  
+  // Costruttore
+  init(container: Container) {
+    // In questo esempio istanzio un service di cache per recuperare il numero di tap salvati in memoria
+    let cacheService = container.resolve(CacheServiceProtocol.self)!
+    
+    // Outputs
+    // Recupero il driver numero di tap dal cacheService mappandolo da Int a String
+    numberOfTapsText = cacheService.numberOfTaps
+    	.asDriver()
+    	.map { "Numero di tap: \($0)" }
+    	
+    // Inputs
+    let buttonTapPs = PublishSubject<Void>()
+    buttonTap = buttonTapPs.asObserver()
+    
+    // Osservo il PublishSubject per eseguire l'handling ad ogni ricezione di un evento di tap dalla view
+    buttonTapPs.bind {
+    		cacheService.numberOfTaps.value = cacheService.numberOfTaps.value + 1
+    	}
+    	.disposed(by: disposeBag)
+  }
+}
+```
 
 ## Binding
 
@@ -250,111 +326,100 @@ Con **binding** si intende il collegamento di una risorsa grafica con il dato o 
 
 Può essere _unidirezionale_:
 
-* _Dato => UI:_ ogni modifica del dato viene automaticamente visualizzata nel UI relativa. Es: `String => UILabel`
-* _UI => Dato_: ogni modifica/azione al componente UI viene automaticamente propagato nel dato relativo. Es: `UIButton tap => ViewModel action`
+* _Dato => UI:_ ogni modifica del dato viene automaticamente visualizzata nel UI relativa.<br>
+Es: `String => UILabel`
+* _UI => Dato_: ogni modifica/azione al componente UI viene automaticamente propagato nel dato relativo.<br>
+Es: `UIButton tap => ViewModel handler`
 
 o _bidirezionale_:
 
-* _UI <=> Dato_: ogni cambiamento viene propagato all'altro elemento. **Attenzione: è facile che si creino dei cicli infiniti se non si prendono le dovute precauzioni (vedi codice sotto). Es: `UITextView <=> String`
+* _UI <=> Dato_: ogni cambiamento viene propagato all'altro elemento. **Attenzione:** è facile che si creino dei cicli infiniti se non si prendono le dovute precauzioni.<br>
+Es: `UITextView <=> String`
 
 Il **binding** permette di creare delle _View_ completamente ignoranti della business logic che sta dietro a ciò che va visualizzato, con il semplice obiettivo di visualizzare ciò che viene rappresentato in maniera astratta dal _ViewModel_.<br>
 In questo modo è possibile sostituire completamente l'aspetto grafico di una schermata mantenendo la business logic implementata nel _ViewModel_.
 
-Per realizzare i binding utilizziamo [ReactiveSwift](http://reactivecocoa.io/reactiveswift/docs/latest/) e [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa/#readme).
+Per realizzare i binding utilizziamo [RxSwift/RxCocoa](https://github.com/ReactiveX/RxSwift).
 
-### Property binding
+### Outputs binding
 
-Grazie a **ReactiveSwift** possiamo creare un binding tra ogni componente grafico `UIKit` e una proprietà di tipo `MutableProperty` definita nel _ViewModel_, tramite l'operatore `<~`.
+Grazie a **RxSwift** possiamo creare un binding tra ogni componente grafico `UIKit` e una proprietà di tipo `Driver` definita nel _ViewModel_, utilizzando il metodo `drive`.
 
-Una **MutableProperty** è un contenitore osservabile di un dato di un determinato tipo (definito in fase di dichiarazione); l'ultimo stato di tale dato è sempre visualizzabile/modificabile tramite la proprietà `value`.<br>
-Ad ogni modifica di `value` viene generato un'evento osservabile sulla `MutableProperty` in modo che chiunque stia osservando tale property riceva l'aggiornamento. In questo modo la UI può rimanere sempre aggiornata sullo stato del dato.
+Come accennato nel capitolo [ViewModel](#viewmodel), un **Driver** è un wrapper di un _Observable_ che forza l'osservazione sul main thread filtrando eventuali errori.
 
-**Nota:** i binding vanno sempre eseguiti sui `BindingTarget` forniti da _ReactiveSwift_ nella proprietà `reactive` di ogni elemento `UIKit`.
-
-#### ViewModel - Dichiarazione proprietà
+#### ViewModel - Dichiarazione Driver
 
 ```Swift
-// Dichiarazione di una MutableProperty di tipo esplicito
-let nameText: MutableProperty<String> = MutableProperty("Mario Rossi")
+// Dichiarazione di un Driver con un singolo evento
+let nameText: Driver<String?> = Driver.just("Mario Rossi")
 
-// Dichiarazione di una MutableProperty con inferenza del tipo (Bool)
-let nameIsHidden = MutableProperty(true)
+// Dichiarazione di un Driver partendo da un observable esistente (getUser -> Observable<User>,
+// dove l'oggeto user contiene una proprietà name di tipo stringa
+let nameText: Driver<String?> = apiService.getUser().map { $0.name }.asDriver(onErrorJustReturn: nil)
+
+// Esposizione di un Driver a partire da un BehaviorRelay utilizzato per gestire l'evoluzione del dato
+private let nameIsHiddenBr: BehaviorRelay<Bool> = BehaviorRelay<Bool>(value: false)
+let nameIsHidden: Driver<Bool> = nameIsHiddenBr.asDriver()
+// È possibile inviare nuovi eventi al BehaviorRelay utilizzando la proprietà value
+nameIsHiddenBr.value = true
 ```
 
 #### View - Creazione binding
 
-##### Unidirezionale: Dato => UI
 ```Swift
-// Testo di label visualizza il contenuto di viewmodel.nameText.value
-nameLabel.reactive.text <~ viewmodel.nameText
+// Testo di label bindato viewmodel.nameText
+viewmodel.nameText
+	.drive(nameLabel.rx.text)
+	.disposed(by: disposeBag)
     
-// Se viewmodel.nameIsHidden.value = true nameLabel viene nascosto
-nameLabel.reactive.isHidden <~ viewmodel.nameIsHidden
+// La visualizzazione del nameLabel si basa sull'ultimo evento ricevuto sul Driver viewmodel.nameIsHidden
+viewmodel.nameisHidden
+	.drive(nameLabel.rx.isHidden)
+	.disposed(by: disposeBag)
 ```
 
-##### Unidirezionale: UI => Dato
-```Swift
-// Testo nel viewmodel viene aggiornato in base al testo inserito dall'utente nel textfield
-viewmodel.nameText <~ nameTextField.reactive.continuousTextValues.map { $0! }
-```
+### Inputs binding
 
-##### Bidirezionale: UI <=> Dato
-```Swift
-// Testo del textfield visualizza il contenuto di viewmodel.nameText.value
-nameTextField.reactive.text <~ viewmodel.nameText
-// Testo nel viewmodel viene aggiornato in base al testo inserito dall'utente nel textfield
-viewmodel.nameText <~ nameTextField.reactive.continuousTextValues.map { $0! }
-```
-Nel caso del paragrafo precedente se si modifica `viewmodel.nameText.value` il testo nel textfield non subirebbe cambiamenti, mentre con il binding bidirezionale il viewmodel può sia visualizzare le modifiche sia inviarne.<br>
-**Nota:** utilizzando l'operatore `<~` non vengono generati loop infiniti. Nel caso non sia possibile utilizzare l'operatore e si debba creare un binding custom allora è necessario verificare che non si crei un loop infinito (ad esempio utilizzando `skipRepeats()` sull'observe.
+Utilizzando **RxSwift** possiamo creare nel _ViewModel_ degli `AnyObserver` a cui bindare dei `ControlEvents` forniti da `UIKit`.
 
-### Action binding
-
-Utilizzando **ReactiveCocoa** possiamo creare nel _ViewModel_ delle `Action` e bindarle all'evento UI che deve scatenarle.
-
-#### ViewModel - Dichiarazione action
+#### ViewModel - Dichiarazione AnyObserver
 
 ```Swift
-var tapAction = Action<Void, Void, NSError> { (_) -> SignalProducer<Void, NSError> in
-  // Inserire qui il codice dell'azione da eseguire sul tap
-  return SignalProducer.empty
-}
+private let disposeBag = DisposeBag()
+
+// PublishSubject per avere Observable e Observer
+private let buttonTapPs = PublishSubject<Void>()
+
+// Espongo l'observer alla View in modo che possa bindare un ControlEvent
+let buttonTap: AnyObserver<Void> = buttonTapPs.asObserver
+
+// Osservo (o bindo) l'handler da eseguire ogni volta che l'utente tappa sul pulsante
+buttonTapPs.bind {
+		// Handler sul tap
+	}
+	.disposed(by: disposeBag)
 ```
 
-#### View - Action binding
+#### View - Creazione binding
 
 ```Swift
-// Quando il pulsante viene premuto viene eseugita l'azione tapAction del viewmodel
-button.reactive.pressed = CocoaAction(viewmodel.tapAction)
+// Quando il pulsante viene premuto viene eseguito l'handler definito nel viewmodel;
+// è molto utile usare l'operatore throttle sui button in modo da evitare doppi tap accidentali
+button.rx.tap
+	.throttle(0.5, scheduler: MainScheduler.instance)
+	.bind(to: viewmodel.buttonTap)
+	.disposed(by: disposeBag)
 ```
 
-### Custom binding
+### Bidirectional binding
 
-In uno dei seguenti casi:
+Il binding bidirezionale non è direttamente supportato da `RxSwift` anche perché può essere formalmente realizzato combinando un input e un output, però nel caso più classico del `UITextField` per un form precompilato si può utilizzare l'operatore `<->` fornito dalla libreria [RxBiBinding](https://github.com/RxSwiftCommunity/RxBiBinding).
 
-* View custom, quindi senza il `BindingTarget` necessario già predisposto da _ReactiveSwift_ nella proprietà _reactive_;
-* L'esito del cambio della proprietà del _ViewModel_ è particolarmente complesso o comporta modifiche a più elementi grafici
+Per utilizzi più complessi del bidirectional binding far riferimento a [questo articolo](https://medium.com/@dannylazarow/rxswift-reverse-observable-aka-two-way-binding-5027cbfdc6f0).
 
-è possibile creare un **custom binding** utilizzando i metodi reactive di _ReactiveSwift_.<br>
-Da una `MutableProperty` si può, infatti, recuperare sia il `Signal` che il `SignalProducer` a seconda della [necessità](https://github.com/tiknil/swift-style-guide#reactive-programming).
+<hr>
 
-```Swift
-// Utilizzando il producer ricevo anche lo stato iniziale della value
-viewmodel.propertyToBind.producer
-  .observe(on: UIScheduler()) // Eseguo l'handling nel main thread
-  .startWithValues { value in
-  // Aggiornamenti UI da eseguire al cambio di viewmodel.propertyToBind.value
-}
-
-// Utilizzando il signal ricevo solo aggiornamenti alla value d'ora in poi
-viewmodel.propertyToBind.signal
-  .observe(on: UIScheduler())
-  .observeValues { value in
-  // Aggiornamenti UI da eseguire al cambio di viewmodel.propertyToBind.value
-}
-```
-
-Per informazioni più approfondite consultare la [documentazione di ReactiveSwift](http://reactivecocoa.io/reactiveswift/docs/latest/).
+Per informazioni più approfondite consultare la documentazione di [RxSwift](https://github.com/ReactiveX/RxSwift) e/o di [ReactiveX](http://reactivex.io/documentation/observable.html).
 
 
 ## Services
@@ -371,7 +436,7 @@ Esempi dei più utilizzati:
 * **WebSocketService:** dedicato alla comunicazione via WebSocket.
 * _ecc..._
 
-## Routing
+## Coordinator
 coming soon
 
 ## JSON Mapping
