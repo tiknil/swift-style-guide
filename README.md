@@ -328,6 +328,7 @@ La cartella contenente il codice sorgente dell'app avrà la seguente struttura:
 ```
 |-- Helpers           # Classi di generico aiuto per tutto l'app. Es: Colors.swift
 |-- Models            # Tutti gli oggetti model
+|-- Coordinators      # Tutti i coordinators per gestire il flusso di navigazione dell'app
 |-- ViewModels        # Tutti i viewmodel eventualmente inseriti in sottocartelle di sezione
 |-- Views             # Tutti i viewcontroller eventualmente inseriti in sottocartelle di sezione
     |-- Reusable      # Tutte le view riutilizzabili in altre view. Es: navigation bar custom
