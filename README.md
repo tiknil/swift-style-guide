@@ -290,6 +290,14 @@ Esempio:
 
 ![Flow Coordinator pattern schema](https://github.com/tiknil/swift-style-guide/blob/master/images/flow_coordinator_pattern_schema.png)
 
+In questo esempio l'`AppCoordinator` è il coordinator principale e all'avvio dell'app deciderà quale coordinator figlio avviare:
+
+* `OnBoardingCoordinator`: al primo avvio dell'app avvierà questo coordinator per mostrare il tutorial.
+* `AuthCoordinator`: se non è stata cachata l'autenticazione in un precedente avvio verrà avviato questo coordinator per permettere all'utente di loggarsi o registrarsi.
+* `MainCoordinator`: questo coordinator può essere avviato direttamente all'avvio se l'autenticazione è stata cachata da sessioni precedenti, oppure in seguito al completamento di un autenticazione nella sessione corrente. Esso ha la possibilità di avviare il coordinator figlio `ProfileCoordinator` per mostrare la schermata di profilo dell'utente.
+
+È interessante notare come sia il `ProfileCoordinator`, sia l'`AuthCoordinator` abbiano la possibilità di avviare l'`OnBoardingCoordinator` per permettere all'utente di visualizzare il tutorial quando lo desidera.
+
 Nella documentazione dell'[esempio pratico](#esempio-pratico) possiamo vedere come Tiknil implementa MVVM + Coordinator nei propri progetti.
 
 ## Struttura del progetto
